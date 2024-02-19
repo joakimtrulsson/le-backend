@@ -30,11 +30,11 @@ export default withAuth(
       image: {
         kind: 'local',
         type: 'image',
-        generateUrl: (path) => `${BASE_URL}/images${path}`,
+        generateUrl: (path) => `/public/images${path}`,
         serverRoute: {
-          path: '/images',
+          path: 'public/images',
         },
-        storagePath: 'public/event-images',
+        storagePath: 'public/images',
       },
     },
 
