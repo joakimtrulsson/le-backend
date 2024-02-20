@@ -16,14 +16,24 @@ const { PORT, BASE_URL, DATABASE_URL } = process.env;
 export default withAuth(
   config({
     db: {
-      provider: 'sqlite',
+      provider: 'postgresql',
       url: DATABASE_URL as string,
+      onConnect: async (context) => {
+        console.log('Connected to database.');
+      },
+
+      // Optional advanced configuration
+      enableLogging: true,
+      idField: { kind: 'uuid' },
+      // shadowDatabaseUrl: 'postgres://dbuser:dbpass@localhost:5432/shadowdb'
     },
 
     server: {
       port: Number(PORT),
       cors: { origin: ['*'], credentials: true },
-      extendExpressApp: (app, commonContext) => {},
+      extendExpressApp: (app, commonContext) => {
+        app.use('/public', express.static('public'));
+      },
     },
     lists,
     storage: {

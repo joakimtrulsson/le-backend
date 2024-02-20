@@ -36,6 +36,7 @@ module.exports = __toCommonJS(keystone_exports);
 var import_core5 = require("@keystone-6/core");
 var import_session2 = require("@keystone-6/core/session");
 var import_dotenv = __toESM(require("dotenv"));
+var import_express = __toESM(require("express"));
 
 // schemas/userSchema.ts
 var import_core = require("@keystone-6/core");
@@ -310,13 +311,21 @@ var { PORT, BASE_URL, DATABASE_URL } = process.env;
 var keystone_default = withAuth(
   (0, import_core5.config)({
     db: {
-      provider: "sqlite",
-      url: DATABASE_URL
+      provider: "postgresql",
+      url: DATABASE_URL,
+      onConnect: async (context) => {
+        console.log("Connected to database.");
+      },
+      // Optional advanced configuration
+      enableLogging: true,
+      idField: { kind: "uuid" }
+      // shadowDatabaseUrl: 'postgres://dbuser:dbpass@localhost:5432/shadowdb'
     },
     server: {
       port: Number(PORT),
       cors: { origin: ["*"], credentials: true },
       extendExpressApp: (app, commonContext) => {
+        app.use("/public", import_express.default.static("public"));
       }
     },
     lists,
