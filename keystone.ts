@@ -11,7 +11,7 @@ import { withAuth } from './auth/auth';
 
 dotenv.config();
 
-const { PORT, BASE_URL, DATABASE_URL } = process.env;
+const { PORT, DATABASE_URL } = process.env;
 
 export default withAuth(
   config({
@@ -21,11 +21,7 @@ export default withAuth(
       onConnect: async (context) => {
         console.log('Connected to database.');
       },
-
-      // Optional advanced configuration
-      enableLogging: true,
       idField: { kind: 'uuid' },
-      // shadowDatabaseUrl: 'postgres://dbuser:dbpass@localhost:5432/shadowdb'
     },
 
     server: {

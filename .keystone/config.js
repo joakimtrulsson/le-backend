@@ -307,7 +307,7 @@ var { withAuth } = (0, import_auth.createAuth)({
 
 // keystone.ts
 import_dotenv.default.config();
-var { PORT, BASE_URL, DATABASE_URL } = process.env;
+var { PORT, DATABASE_URL } = process.env;
 var keystone_default = withAuth(
   (0, import_core5.config)({
     db: {
@@ -316,10 +316,7 @@ var keystone_default = withAuth(
       onConnect: async (context) => {
         console.log("Connected to database.");
       },
-      // Optional advanced configuration
-      enableLogging: true,
       idField: { kind: "uuid" }
-      // shadowDatabaseUrl: 'postgres://dbuser:dbpass@localhost:5432/shadowdb'
     },
     server: {
       port: Number(PORT),
