@@ -215,7 +215,18 @@ var productSchema = (0, import_core3.list)({
     }
   },
   ui: {
-    labelField: "productTitle"
+    labelField: "productTitle",
+    listView: {
+      initialColumns: [
+        "productTitle",
+        "price",
+        "discountPrice",
+        "recommendedProduct",
+        "status"
+      ],
+      initialSort: { field: "productTitle", direction: "ASC" },
+      pageSize: 50
+    }
   },
   fields: {
     productTitle: (0, import_fields3.text)({ isIndexed: "unique", validation: { isRequired: true } }),
@@ -233,11 +244,27 @@ var productSchema = (0, import_core3.list)({
       defaultValue: "kr",
       ui: { displayMode: "segmented-control" }
     }),
-    discountPrice: (0, import_fields3.integer)({}),
+    discountPrice: (0, import_fields3.integer)({
+      ui: {
+        description: "Om discount pris \xE4r satt, produkten visas i Erbjudande-sektionen."
+      }
+    }),
+    recommendedProduct: (0, import_fields3.select)({
+      options: [
+        { label: "Ja", value: "yes" },
+        { label: "Nej", value: "no" }
+      ],
+      validation: { isRequired: true },
+      defaultValue: "no",
+      ui: {
+        description: "Om Yes, s\xE5 visas produkten som rekommenderad produkt i Erbjudande-sektionen.",
+        displayMode: "segmented-control"
+      }
+    }),
     status: (0, import_fields3.select)({
       options: [
-        { label: "Published", value: "published" },
-        { label: "Draft", value: "draft" }
+        { label: "Publicerad", value: "published" },
+        { label: "Utkast", value: "draft" }
       ],
       validation: { isRequired: true },
       defaultValue: "draft",

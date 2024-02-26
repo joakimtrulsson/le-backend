@@ -222,6 +222,7 @@ type Product {
   price: Int
   priceUnit: String
   discountPrice: Int
+  recommendedProduct: String
   status: String
 }
 
@@ -256,6 +257,7 @@ input ProductWhereInput {
   price: IntFilter
   priceUnit: StringFilter
   discountPrice: IntNullableFilter
+  recommendedProduct: StringFilter
   status: StringFilter
 }
 
@@ -288,6 +290,7 @@ input ProductOrderByInput {
   price: OrderDirection
   priceUnit: OrderDirection
   discountPrice: OrderDirection
+  recommendedProduct: OrderDirection
   status: OrderDirection
 }
 
@@ -298,6 +301,7 @@ input ProductUpdateInput {
   price: Int
   priceUnit: String
   discountPrice: Int
+  recommendedProduct: String
   status: String
 }
 
@@ -320,6 +324,7 @@ input ProductCreateInput {
   price: Int
   priceUnit: String
   discountPrice: Int
+  recommendedProduct: String
   status: String
 }
 

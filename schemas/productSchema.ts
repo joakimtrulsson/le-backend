@@ -20,6 +20,17 @@ export const productSchema = list({
   },
   ui: {
     labelField: 'productTitle',
+    listView: {
+      initialColumns: [
+        'productTitle',
+        'price',
+        'discountPrice',
+        'recommendedProduct',
+        'status',
+      ],
+      initialSort: { field: 'productTitle', direction: 'ASC' },
+      pageSize: 50,
+    },
   },
   fields: {
     productTitle: text({ isIndexed: 'unique', validation: { isRequired: true } }),
@@ -42,12 +53,30 @@ export const productSchema = list({
       ui: { displayMode: 'segmented-control' },
     }),
 
-    discountPrice: integer({}),
+    discountPrice: integer({
+      ui: {
+        description: 'Om discount pris är satt, produkten visas i Erbjudande-sektionen.',
+      },
+    }),
+
+    recommendedProduct: select({
+      options: [
+        { label: 'Ja', value: 'yes' },
+        { label: 'Nej', value: 'no' },
+      ],
+      validation: { isRequired: true },
+      defaultValue: 'no',
+      ui: {
+        description:
+          'Om Yes, så visas produkten som rekommenderad produkt i Erbjudande-sektionen.',
+        displayMode: 'segmented-control',
+      },
+    }),
 
     status: select({
       options: [
-        { label: 'Published', value: 'published' },
-        { label: 'Draft', value: 'draft' },
+        { label: 'Publicerad', value: 'published' },
+        { label: 'Utkast', value: 'draft' },
       ],
       validation: { isRequired: true },
       defaultValue: 'draft',
