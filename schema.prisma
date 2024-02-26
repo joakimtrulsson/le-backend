@@ -52,14 +52,16 @@ model Product {
 }
 
 model Project {
-  id                     String  @id @default(uuid()) @postgresql.Uuid
-  projectTitle           String  @default("")
-  description            String  @default("")
+  id                     String   @id @default(uuid()) @postgresql.Uuid
+  projectTitle           String   @default("")
+  shortDescription       String   @default("")
+  fullDescription        String   @default("")
   projectImage_filesize  Int?
   projectImage_extension String?
   projectImage_width     Int?
   projectImage_height    Int?
   projectImage_id        String?
-  year                   Int
-  location               String  @default("")
+  date                   DateTime @postgresql.Date
+  location               String   @default("")
+  icon                   Json?
 }

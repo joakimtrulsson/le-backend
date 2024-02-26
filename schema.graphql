@@ -325,11 +325,15 @@ input ProductCreateInput {
 type Project {
   id: ID!
   projectTitle: String
-  description: String
+  shortDescription: String
+  fullDescription: String
   projectImage: ImageFieldOutput
-  year: Int
+  date: CalendarDay
   location: String
+  icon: JSON
 }
+
+scalar CalendarDay @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input ProjectWhereUniqueInput {
   id: ID
@@ -341,25 +345,40 @@ input ProjectWhereInput {
   NOT: [ProjectWhereInput!]
   id: IDFilter
   projectTitle: StringFilter
-  description: StringFilter
-  year: IntFilter
+  shortDescription: StringFilter
+  fullDescription: StringFilter
+  date: CalendarDayFilter
   location: StringFilter
+}
+
+input CalendarDayFilter {
+  equals: CalendarDay
+  in: [CalendarDay!]
+  notIn: [CalendarDay!]
+  lt: CalendarDay
+  lte: CalendarDay
+  gt: CalendarDay
+  gte: CalendarDay
+  not: CalendarDayFilter
 }
 
 input ProjectOrderByInput {
   id: OrderDirection
   projectTitle: OrderDirection
-  description: OrderDirection
-  year: OrderDirection
+  shortDescription: OrderDirection
+  fullDescription: OrderDirection
+  date: OrderDirection
   location: OrderDirection
 }
 
 input ProjectUpdateInput {
   projectTitle: String
-  description: String
+  shortDescription: String
+  fullDescription: String
   projectImage: ImageFieldInput
-  year: Int
+  date: CalendarDay
   location: String
+  icon: JSON
 }
 
 input ProjectUpdateArgs {
@@ -369,10 +388,12 @@ input ProjectUpdateArgs {
 
 input ProjectCreateInput {
   projectTitle: String
-  description: String
+  shortDescription: String
+  fullDescription: String
   projectImage: ImageFieldInput
-  year: Int
+  date: CalendarDay
   location: String
+  icon: JSON
 }
 
 """

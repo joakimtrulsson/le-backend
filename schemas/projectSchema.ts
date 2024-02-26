@@ -1,5 +1,5 @@
 import { list } from '@keystone-6/core';
-import { text, integer, image } from '@keystone-6/core/fields';
+import { text, image, json, calendarDay } from '@keystone-6/core/fields';
 
 import { allOperations } from '@keystone-6/core/access';
 import { isSignedIn, permissions, rules } from '../auth/access';
@@ -24,12 +24,24 @@ export const projectSchema = list({
   fields: {
     projectTitle: text({ validation: { isRequired: true } }),
 
-    description: text({ validation: { isRequired: true } }),
+    shortDescription: text({ validation: { isRequired: true, length: { max: 100 } } }),
+
+    fullDescription: text({ validation: { isRequired: true } }),
 
     projectImage: image({ storage: 's3_image' }),
 
-    year: integer({ validation: { isRequired: true } }),
+    date: calendarDay({ validation: { isRequired: true } }),
 
-    location: text({}),
+    location: text({ validation: { isRequired: true } }),
+
+    icon: json({
+      label: 'Icon',
+      ui: {
+        views: './customViews/IconPickerField.tsx',
+        createView: { fieldMode: 'edit' },
+        listView: { fieldMode: 'hidden' },
+        itemView: { fieldMode: 'edit' },
+      },
+    }),
   },
 });

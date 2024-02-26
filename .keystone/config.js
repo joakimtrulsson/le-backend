@@ -269,10 +269,20 @@ var projectSchema = (0, import_core4.list)({
   },
   fields: {
     projectTitle: (0, import_fields4.text)({ validation: { isRequired: true } }),
-    description: (0, import_fields4.text)({ validation: { isRequired: true } }),
+    shortDescription: (0, import_fields4.text)({ validation: { isRequired: true, length: { max: 100 } } }),
+    fullDescription: (0, import_fields4.text)({ validation: { isRequired: true } }),
     projectImage: (0, import_fields4.image)({ storage: "s3_image" }),
-    year: (0, import_fields4.integer)({ validation: { isRequired: true } }),
-    location: (0, import_fields4.text)({})
+    date: (0, import_fields4.calendarDay)({ validation: { isRequired: true } }),
+    location: (0, import_fields4.text)({ validation: { isRequired: true } }),
+    icon: (0, import_fields4.json)({
+      label: "Icon",
+      ui: {
+        views: "./customViews/IconPickerField.tsx",
+        createView: { fieldMode: "edit" },
+        listView: { fieldMode: "hidden" },
+        itemView: { fieldMode: "edit" }
+      }
+    })
   }
 });
 
