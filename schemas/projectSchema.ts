@@ -26,7 +26,7 @@ export const projectSchema = list({
 
     description: text({ validation: { isRequired: true } }),
 
-    projectImage: image({ storage: 'image' }),
+    projectImage: image({ storage: 's3_image' }),
 
     year: integer({ validation: { isRequired: true } }),
 
