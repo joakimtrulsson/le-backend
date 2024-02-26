@@ -22,7 +22,7 @@ export const productSchema = list({
     labelField: 'productTitle',
   },
   fields: {
-    productTitle: text({ validation: { isRequired: true } }),
+    productTitle: text({ isIndexed: 'unique', validation: { isRequired: true } }),
 
     description: text({ validation: { isRequired: true } }),
 

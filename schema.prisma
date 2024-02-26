@@ -38,7 +38,7 @@ model Role {
 
 model Product {
   id                     String  @id @default(uuid()) @postgresql.Uuid
-  productTitle           String  @default("")
+  productTitle           String  @unique @default("")
   description            String  @default("")
   productImage_filesize  Int?
   productImage_extension String?
@@ -64,4 +64,12 @@ model Project {
   date                   DateTime @postgresql.Date
   location               String   @default("")
   icon                   Json?
+}
+
+model Review {
+  id         String   @id @default(uuid()) @postgresql.Uuid
+  reviewBy   String   @default("")
+  reviewText String   @default("")
+  date       DateTime @postgresql.Date
+  location   String   @default("")
 }

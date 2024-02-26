@@ -33,7 +33,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core5 = require("@keystone-6/core");
+var import_core6 = require("@keystone-6/core");
 var import_session2 = require("@keystone-6/core/session");
 var import_dotenv = __toESM(require("dotenv"));
 var import_express = __toESM(require("express"));
@@ -218,7 +218,7 @@ var productSchema = (0, import_core3.list)({
     labelField: "productTitle"
   },
   fields: {
-    productTitle: (0, import_fields3.text)({ validation: { isRequired: true } }),
+    productTitle: (0, import_fields3.text)({ isIndexed: "unique", validation: { isRequired: true } }),
     description: (0, import_fields3.text)({ validation: { isRequired: true } }),
     productImage: (0, import_fields3.image)({ storage: "s3_image" }),
     price: (0, import_fields3.integer)({ validation: { isRequired: true } }),
@@ -286,12 +286,42 @@ var projectSchema = (0, import_core4.list)({
   }
 });
 
+// schemas/reviewSchema.ts
+var import_core5 = require("@keystone-6/core");
+var import_fields5 = require("@keystone-6/core/fields");
+var import_access9 = require("@keystone-6/core/access");
+var reviewSchema = (0, import_core5.list)({
+  access: {
+    operation: {
+      ...(0, import_access9.allOperations)(isSignedIn),
+      create: permissions.canCreateItems,
+      query: () => true
+    },
+    filter: {
+      query: () => true,
+      // query: rules.canReadItems,
+      update: rules.canManageItems,
+      delete: rules.canManageItems
+    }
+  },
+  ui: {
+    labelField: "reviewBy"
+  },
+  fields: {
+    reviewBy: (0, import_fields5.text)({ validation: { isRequired: true } }),
+    reviewText: (0, import_fields5.text)({ validation: { isRequired: true } }),
+    date: (0, import_fields5.calendarDay)({ validation: { isRequired: true } }),
+    location: (0, import_fields5.text)({ validation: { isRequired: true } })
+  }
+});
+
 // schema.ts
 var lists = {
   User: userSchema,
   Role: roleSchema,
   Product: productSchema,
-  Project: projectSchema
+  Project: projectSchema,
+  Review: reviewSchema
 };
 
 // auth/auth.ts
@@ -348,7 +378,7 @@ var {
   BUCKETEER_AWS_SECRET_ACCESS_KEY: secretAccessKey
 } = process.env;
 var keystone_default = withAuth(
-  (0, import_core5.config)({
+  (0, import_core6.config)({
     db: {
       provider: "postgresql",
       url: DATABASE_URL,
