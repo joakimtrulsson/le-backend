@@ -33,7 +33,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core6 = require("@keystone-6/core");
+var import_core7 = require("@keystone-6/core");
 var import_session2 = require("@keystone-6/core/session");
 var import_dotenv = __toESM(require("dotenv"));
 var import_express = __toESM(require("express"));
@@ -230,7 +230,7 @@ var productSchema = (0, import_core3.list)({
         { label: "Per stk", value: "perstk" }
       ],
       validation: { isRequired: true },
-      defaultValue: "USD",
+      defaultValue: "kr",
       ui: { displayMode: "segmented-control" }
     }),
     discountPrice: (0, import_fields3.integer)({}),
@@ -315,13 +315,54 @@ var reviewSchema = (0, import_core5.list)({
   }
 });
 
+// schemas/siteConfigSchema.ts
+var import_core6 = require("@keystone-6/core");
+var import_fields6 = require("@keystone-6/core/fields");
+var import_fields_document = require("@keystone-6/fields-document");
+var import_access11 = require("@keystone-6/core/access");
+var siteConfigSchema = (0, import_core6.list)({
+  access: {
+    operation: {
+      ...(0, import_access11.allOperations)(isSignedIn),
+      create: permissions.canCreateItems,
+      query: () => true
+    },
+    filter: {
+      query: () => true,
+      // query: rules.canReadItems,
+      update: rules.canManageItems,
+      delete: rules.canManageItems
+    }
+  },
+  isSingleton: true,
+  fields: {
+    siteTitle: (0, import_fields6.text)({ validation: { isRequired: true } }),
+    preamble: (0, import_fields_document.document)({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true
+        },
+        alignment: {
+          center: true,
+          end: true
+        }
+      }
+    }),
+    heroImage: (0, import_fields6.image)({ storage: "s3_image" })
+  }
+});
+
 // schema.ts
 var lists = {
   User: userSchema,
   Role: roleSchema,
   Product: productSchema,
   Project: projectSchema,
-  Review: reviewSchema
+  Review: reviewSchema,
+  SiteConfig: siteConfigSchema
 };
 
 // auth/auth.ts
@@ -370,7 +411,7 @@ import_dotenv.default.config();
 var {
   PORT,
   BASE_URL,
-  DATABASE_URL,
+  HEROKU_POSTGRESQL_BROWN_URL,
   CORS_FRONTEND_ORIGIN,
   BUCKETEER_BUCKET_NAME: bucketName,
   BUCKETEER_AWS_REGION: region,
@@ -378,10 +419,10 @@ var {
   BUCKETEER_AWS_SECRET_ACCESS_KEY: secretAccessKey
 } = process.env;
 var keystone_default = withAuth(
-  (0, import_core6.config)({
+  (0, import_core7.config)({
     db: {
       provider: "postgresql",
-      url: DATABASE_URL,
+      url: HEROKU_POSTGRESQL_BROWN_URL,
       onConnect: async (context) => {
         console.log("Connected to database.");
       },

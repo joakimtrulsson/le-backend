@@ -46,7 +46,7 @@ model Product {
   productImage_height    Int?
   productImage_id        String?
   price                  Int
-  priceUnit              String  @default("USD")
+  priceUnit              String  @default("kr")
   discountPrice          Int?
   status                 String  @default("draft")
 }
@@ -72,4 +72,15 @@ model Review {
   reviewText String   @default("")
   date       DateTime @postgresql.Date
   location   String   @default("")
+}
+
+model SiteConfig {
+  id                  Int     @id
+  siteTitle           String  @default("")
+  preamble            Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  heroImage_filesize  Int?
+  heroImage_extension String?
+  heroImage_width     Int?
+  heroImage_height    Int?
+  heroImage_id        String?
 }

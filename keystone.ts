@@ -14,7 +14,7 @@ dotenv.config();
 const {
   PORT,
   BASE_URL,
-  DATABASE_URL,
+  HEROKU_POSTGRESQL_BROWN_URL,
   CORS_FRONTEND_ORIGIN,
   BUCKETEER_BUCKET_NAME: bucketName,
   BUCKETEER_AWS_REGION: region,
@@ -26,7 +26,7 @@ export default withAuth(
   config({
     db: {
       provider: 'postgresql',
-      url: DATABASE_URL as string,
+      url: HEROKU_POSTGRESQL_BROWN_URL as string,
       onConnect: async (context) => {
         console.log('Connected to database.');
       },

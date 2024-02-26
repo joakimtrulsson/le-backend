@@ -447,6 +447,51 @@ input ReviewCreateInput {
   location: String
 }
 
+type SiteConfig {
+  id: ID!
+  siteTitle: String
+  preamble: SiteConfig_preamble_Document
+  heroImage: ImageFieldOutput
+}
+
+type SiteConfig_preamble_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+input SiteConfigWhereUniqueInput {
+  id: ID
+}
+
+input SiteConfigWhereInput {
+  AND: [SiteConfigWhereInput!]
+  OR: [SiteConfigWhereInput!]
+  NOT: [SiteConfigWhereInput!]
+  id: IDFilter
+  siteTitle: StringFilter
+}
+
+input SiteConfigOrderByInput {
+  id: OrderDirection
+  siteTitle: OrderDirection
+}
+
+input SiteConfigUpdateInput {
+  siteTitle: String
+  preamble: JSON
+  heroImage: ImageFieldInput
+}
+
+input SiteConfigUpdateArgs {
+  where: SiteConfigWhereUniqueInput! = {id: 1}
+  data: SiteConfigUpdateInput!
+}
+
+input SiteConfigCreateInput {
+  siteTitle: String
+  preamble: JSON
+  heroImage: ImageFieldInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -483,6 +528,12 @@ type Mutation {
   updateReviews(data: [ReviewUpdateArgs!]!): [Review]
   deleteReview(where: ReviewWhereUniqueInput!): Review
   deleteReviews(where: [ReviewWhereUniqueInput!]!): [Review]
+  createSiteConfig(data: SiteConfigCreateInput!): SiteConfig
+  createSiteConfigs(data: [SiteConfigCreateInput!]!): [SiteConfig]
+  updateSiteConfig(where: SiteConfigWhereUniqueInput! = {id: 1}, data: SiteConfigUpdateInput!): SiteConfig
+  updateSiteConfigs(data: [SiteConfigUpdateArgs!]!): [SiteConfig]
+  deleteSiteConfig(where: SiteConfigWhereUniqueInput! = {id: 1}): SiteConfig
+  deleteSiteConfigs(where: [SiteConfigWhereUniqueInput!]!): [SiteConfig]
   endSession: Boolean!
   authenticateUserWithPassword(name: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -520,6 +571,9 @@ type Query {
   reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
   review(where: ReviewWhereUniqueInput!): Review
   reviewsCount(where: ReviewWhereInput! = {}): Int
+  siteConfigs(where: SiteConfigWhereInput! = {id: {equals: 1}}, orderBy: [SiteConfigOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SiteConfigWhereUniqueInput): [SiteConfig!]
+  siteConfig(where: SiteConfigWhereUniqueInput! = {id: 1}): SiteConfig
+  siteConfigsCount(where: SiteConfigWhereInput! = {id: {equals: 1}}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

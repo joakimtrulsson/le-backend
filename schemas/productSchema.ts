@@ -38,7 +38,7 @@ export const productSchema = list({
         { label: 'Per stk', value: 'perstk' },
       ],
       validation: { isRequired: true },
-      defaultValue: 'USD',
+      defaultValue: 'kr',
       ui: { displayMode: 'segmented-control' },
     }),
 
