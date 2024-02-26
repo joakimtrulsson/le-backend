@@ -46,7 +46,9 @@ model Product {
   productImage_height    Int?
   productImage_id        String?
   price                  Int
+  priceUnit              String  @default("USD")
   discountPrice          Int?
+  status                 String  @default("draft")
 }
 
 model Project {

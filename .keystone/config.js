@@ -220,9 +220,29 @@ var productSchema = (0, import_core3.list)({
   fields: {
     productTitle: (0, import_fields3.text)({ validation: { isRequired: true } }),
     description: (0, import_fields3.text)({ validation: { isRequired: true } }),
-    productImage: (0, import_fields3.image)({ storage: "image" }),
+    productImage: (0, import_fields3.image)({ storage: "s3_image" }),
     price: (0, import_fields3.integer)({ validation: { isRequired: true } }),
-    discountPrice: (0, import_fields3.integer)({})
+    priceUnit: (0, import_fields3.select)({
+      options: [
+        { label: "Kr", value: "kr" },
+        { label: "Per kubik", value: "perkubik" },
+        { label: "Per kvm2", value: "perkvm" },
+        { label: "Per stk", value: "perstk" }
+      ],
+      validation: { isRequired: true },
+      defaultValue: "USD",
+      ui: { displayMode: "segmented-control" }
+    }),
+    discountPrice: (0, import_fields3.integer)({}),
+    status: (0, import_fields3.select)({
+      options: [
+        { label: "Published", value: "published" },
+        { label: "Draft", value: "draft" }
+      ],
+      validation: { isRequired: true },
+      defaultValue: "draft",
+      ui: { displayMode: "segmented-control" }
+    })
   }
 });
 
@@ -250,7 +270,7 @@ var projectSchema = (0, import_core4.list)({
   fields: {
     projectTitle: (0, import_fields4.text)({ validation: { isRequired: true } }),
     description: (0, import_fields4.text)({ validation: { isRequired: true } }),
-    projectImage: (0, import_fields4.image)({ storage: "image" }),
+    projectImage: (0, import_fields4.image)({ storage: "s3_image" }),
     year: (0, import_fields4.integer)({ validation: { isRequired: true } }),
     location: (0, import_fields4.text)({})
   }
@@ -307,7 +327,16 @@ var { withAuth } = (0, import_auth.createAuth)({
 
 // keystone.ts
 import_dotenv.default.config();
-var { PORT, BASE_URL, DATABASE_URL } = process.env;
+var {
+  PORT,
+  BASE_URL,
+  DATABASE_URL,
+  CORS_FRONTEND_ORIGIN,
+  BUCKETEER_BUCKET_NAME: bucketName,
+  BUCKETEER_AWS_REGION: region,
+  BUCKETEER_AWS_ACCESS_KEY_ID: accessKeyId,
+  BUCKETEER_AWS_SECRET_ACCESS_KEY: secretAccessKey
+} = process.env;
 var keystone_default = withAuth(
   (0, import_core5.config)({
     db: {
@@ -316,10 +345,8 @@ var keystone_default = withAuth(
       onConnect: async (context) => {
         console.log("Connected to database.");
       },
-      // Optional advanced configuration
-      enableLogging: true,
+      // enableLogging: true,
       idField: { kind: "uuid" }
-      // shadowDatabaseUrl: 'postgres://dbuser:dbpass@localhost:5432/shadowdb'
     },
     server: {
       port: Number(PORT),
@@ -330,14 +357,13 @@ var keystone_default = withAuth(
     },
     lists,
     storage: {
-      image: {
-        kind: "local",
+      s3_image: {
+        kind: "s3",
         type: "image",
-        generateUrl: (path) => `/public/images${path}`,
-        serverRoute: {
-          path: "public/images"
-        },
-        storagePath: "public/images"
+        bucketName,
+        region,
+        accessKeyId,
+        secretAccessKey
       }
     },
     ui: {
