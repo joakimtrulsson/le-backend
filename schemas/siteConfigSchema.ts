@@ -23,7 +23,7 @@ export const siteConfigSchema = list({
   fields: {
     siteTitle: text({ validation: { isRequired: true } }),
 
-    preamble: document({
+    heroPreamble: document({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -39,5 +39,80 @@ export const siteConfigSchema = list({
     }),
 
     heroImage: image({ storage: 's3_image' }),
+
+    projectsPreabmle: document({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true,
+        },
+        alignment: {
+          center: true,
+          end: true,
+        },
+      },
+    }),
+
+    productsPreabmle: document({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true,
+        },
+        alignment: {
+          center: true,
+          end: true,
+        },
+      },
+    }),
+
+    reviewsPreabmle: document({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true,
+        },
+        alignment: {
+          center: true,
+          end: true,
+        },
+      },
+    }),
+
+    ourServicesPreabmle: document({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true,
+        },
+        alignment: {
+          center: true,
+          end: true,
+        },
+      },
+    }),
+
+    offersPreabmle: document({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true,
+        },
+        alignment: {
+          center: true,
+          end: true,
+        },
+      },
+    }),
   },
 });

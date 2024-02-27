@@ -1,0 +1,11 @@
+extends baseEmail
+block content
+
+  p Du har fått ett meddelande från #{name}.
+  p Från #{name}
+  p Email: #{contactEmail}
+  p Telefonnr: #{phoneNr}
+  p Meddelande: #{message}
+  
+  p Mailet skickades från ip-adressen: #{ip}
+  

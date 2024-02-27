@@ -455,11 +455,36 @@ input ReviewCreateInput {
 type SiteConfig {
   id: ID!
   siteTitle: String
-  preamble: SiteConfig_preamble_Document
+  heroPreamble: SiteConfig_heroPreamble_Document
   heroImage: ImageFieldOutput
+  projectsPreabmle: SiteConfig_projectsPreabmle_Document
+  productsPreabmle: SiteConfig_productsPreabmle_Document
+  reviewsPreabmle: SiteConfig_reviewsPreabmle_Document
+  ourServicesPreabmle: SiteConfig_ourServicesPreabmle_Document
+  offersPreabmle: SiteConfig_offersPreabmle_Document
 }
 
-type SiteConfig_preamble_Document {
+type SiteConfig_heroPreamble_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+type SiteConfig_projectsPreabmle_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+type SiteConfig_productsPreabmle_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+type SiteConfig_reviewsPreabmle_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+type SiteConfig_ourServicesPreabmle_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+type SiteConfig_offersPreabmle_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
@@ -482,8 +507,13 @@ input SiteConfigOrderByInput {
 
 input SiteConfigUpdateInput {
   siteTitle: String
-  preamble: JSON
+  heroPreamble: JSON
   heroImage: ImageFieldInput
+  projectsPreabmle: JSON
+  productsPreabmle: JSON
+  reviewsPreabmle: JSON
+  ourServicesPreabmle: JSON
+  offersPreabmle: JSON
 }
 
 input SiteConfigUpdateArgs {
@@ -493,8 +523,13 @@ input SiteConfigUpdateArgs {
 
 input SiteConfigCreateInput {
   siteTitle: String
-  preamble: JSON
+  heroPreamble: JSON
   heroImage: ImageFieldInput
+  projectsPreabmle: JSON
+  productsPreabmle: JSON
+  reviewsPreabmle: JSON
+  ourServicesPreabmle: JSON
+  offersPreabmle: JSON
 }
 
 """

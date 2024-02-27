@@ -5,6 +5,9 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -26,6 +29,89 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// utils/email.js
+var require_email = __commonJS({
+  "utils/email.js"(exports2, module2) {
+    "use strict";
+    var import_nodemailer = __toESM(require("nodemailer"));
+    var import_pug = __toESM(require("pug"));
+    var import_html_to_text = require("html-to-text");
+    module2.exports = class Email {
+      constructor(fromEmail, mailData) {
+        this.to = mailData.targetEmail, this.name = mailData.name, this.phoneNr = mailData.phoneNr, this.contactEmail = mailData.contactEmail, this.message = mailData.message, this.from = fromEmail;
+        this.ip = mailData.ip;
+      }
+      newTransport() {
+        return import_nodemailer.default.createTransport({
+          host: process.env.EMAIL_HOST,
+          port: process.env.EMAIL_PORT,
+          secure: false,
+          // logger: true,
+          auth: {
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
+          }
+        });
+      }
+      // Skickar mailet.
+      async send(template, subject) {
+        const html = import_pug.default.renderFile(`${__dirname}/../views/emails/${template}.pug`, {
+          name: this.name,
+          contactEmail: this.contactEmail,
+          message: this.message,
+          phoneNr: this.phoneNr,
+          ip: this.ip,
+          subject
+        });
+        const mailOptions = {
+          from: this.from,
+          to: this.to,
+          subject,
+          html,
+          text: (0, import_html_to_text.htmlToText)(html)
+        };
+        await this.newTransport().sendMail(mailOptions);
+      }
+      async sendContactUs() {
+        await this.send("contact", "Meddelande fr\xE5n hemsidan!");
+      }
+    };
+  }
+});
+
+// routes/emailRoutes.js
+var require_emailRoutes = __commonJS({
+  "routes/emailRoutes.js"(exports2, module2) {
+    "use strict";
+    var import_email = __toESM(require_email());
+    var sendEmail2 = async (req, res) => {
+      try {
+        const fromEmail = `${process.env.EMAIL_FROM}}`;
+        if (!req.body.name || !req.body.contactEmail || !req.body.phoneNr || !req.body.message) {
+          return res.status(400).send({
+            succuess: false,
+            message: "Missing or invalid required fields"
+          });
+        }
+        const mailData = {
+          targetEmail: fromEmail,
+          name: req.body.name,
+          contactEmail: req.body.contactEmail,
+          phoneNr: req.body.phoneNr,
+          message: req.body.message,
+          ip: req.connection.remoteAddress
+        };
+        await new import_email.default(fromEmail, mailData).sendContactUs();
+        res.status(200).send({ success: true, message: "Email sent" });
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: err.message });
+      }
+    };
+    module2.exports = sendEmail2;
+  }
+});
 
 // keystone.ts
 var keystone_exports = {};
@@ -364,7 +450,7 @@ var siteConfigSchema = (0, import_core6.list)({
   isSingleton: true,
   fields: {
     siteTitle: (0, import_fields6.text)({ validation: { isRequired: true } }),
-    preamble: (0, import_fields_document.document)({
+    heroPreamble: (0, import_fields_document.document)({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -378,7 +464,77 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    heroImage: (0, import_fields6.image)({ storage: "s3_image" })
+    heroImage: (0, import_fields6.image)({ storage: "s3_image" }),
+    projectsPreabmle: (0, import_fields_document.document)({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true
+        },
+        alignment: {
+          center: true,
+          end: true
+        }
+      }
+    }),
+    productsPreabmle: (0, import_fields_document.document)({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true
+        },
+        alignment: {
+          center: true,
+          end: true
+        }
+      }
+    }),
+    reviewsPreabmle: (0, import_fields_document.document)({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true
+        },
+        alignment: {
+          center: true,
+          end: true
+        }
+      }
+    }),
+    ourServicesPreabmle: (0, import_fields_document.document)({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true
+        },
+        alignment: {
+          center: true,
+          end: true
+        }
+      }
+    }),
+    offersPreabmle: (0, import_fields_document.document)({
+      formatting: {
+        inlineMarks: {
+          bold: true,
+          italic: true,
+          underline: true,
+          strikethrough: true
+        },
+        alignment: {
+          center: true,
+          end: true
+        }
+      }
+    })
   }
 });
 
@@ -391,6 +547,9 @@ var lists = {
   Review: reviewSchema,
   SiteConfig: siteConfigSchema
 };
+
+// keystone.ts
+var import_emailRoutes = __toESM(require_emailRoutes());
 
 // auth/auth.ts
 var import_auth = require("@keystone-6/auth");
@@ -458,9 +617,11 @@ var keystone_default = withAuth(
     },
     server: {
       port: Number(PORT),
-      cors: { origin: ["*"], credentials: true },
+      cors: { origin: [process.env.CORS_FRONTEND_ORIGIN], credentials: true },
       extendExpressApp: (app, commonContext) => {
+        app.use(import_express.default.json());
         app.use("/public", import_express.default.static("public"));
+        app.post("/api/email", import_emailRoutes.default);
       }
     },
     lists,

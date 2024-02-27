@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 
 import { lists } from './schema';
-
+import sendEmail from './routes/emailRoutes';
 import { withAuth } from './auth/auth';
 
 dotenv.config();
@@ -35,9 +35,11 @@ export default withAuth(
     },
     server: {
       port: Number(PORT),
-      cors: { origin: ['*'], credentials: true },
+      cors: { origin: [process.env.CORS_FRONTEND_ORIGIN], credentials: true },
       extendExpressApp: (app, commonContext) => {
+        app.use(express.json());
         app.use('/public', express.static('public'));
+        app.post('/api/email', sendEmail);
       },
     },
     lists,

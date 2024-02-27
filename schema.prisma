@@ -78,10 +78,15 @@ model Review {
 model SiteConfig {
   id                  Int     @id
   siteTitle           String  @default("")
-  preamble            Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  heroPreamble        Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   heroImage_filesize  Int?
   heroImage_extension String?
   heroImage_width     Int?
   heroImage_height    Int?
   heroImage_id        String?
+  projectsPreabmle    Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  productsPreabmle    Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  reviewsPreabmle     Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  ourServicesPreabmle Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  offersPreabmle      Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 }
