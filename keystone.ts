@@ -35,7 +35,7 @@ export default withAuth(
     },
     server: {
       port: Number(PORT),
-      cors: { origin: [process.env.CORS_FRONTEND_ORIGIN], credentials: true },
+      cors: { origin: [CORS_FRONTEND_ORIGIN], credentials: true },
       extendExpressApp: (app, commonContext) => {
         app.use(express.json());
         app.use('/public', express.static('public'));

@@ -465,7 +465,7 @@ var siteConfigSchema = (0, import_core6.list)({
       }
     }),
     heroImage: (0, import_fields6.image)({ storage: "s3_image" }),
-    projectsPreabmle: (0, import_fields_document.document)({
+    projectsPreamble: (0, import_fields_document.document)({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -479,7 +479,7 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    productsPreabmle: (0, import_fields_document.document)({
+    productsPreamble: (0, import_fields_document.document)({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -493,7 +493,7 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    reviewsPreabmle: (0, import_fields_document.document)({
+    reviewsPreamble: (0, import_fields_document.document)({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -507,7 +507,7 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    ourServicesPreabmle: (0, import_fields_document.document)({
+    ourServicesPreamble: (0, import_fields_document.document)({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -521,7 +521,7 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    offersPreabmle: (0, import_fields_document.document)({
+    offersPreamble: (0, import_fields_document.document)({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -617,7 +617,7 @@ var keystone_default = withAuth(
     },
     server: {
       port: Number(PORT),
-      cors: { origin: [process.env.CORS_FRONTEND_ORIGIN], credentials: true },
+      cors: { origin: [CORS_FRONTEND_ORIGIN], credentials: true },
       extendExpressApp: (app, commonContext) => {
         app.use(import_express.default.json());
         app.use("/public", import_express.default.static("public"));

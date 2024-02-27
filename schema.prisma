@@ -84,9 +84,9 @@ model SiteConfig {
   heroImage_width     Int?
   heroImage_height    Int?
   heroImage_id        String?
-  projectsPreabmle    Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  productsPreabmle    Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  reviewsPreabmle     Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  ourServicesPreabmle Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  offersPreabmle      Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  projectsPreamble    Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  productsPreamble    Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  reviewsPreamble     Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  ourServicesPreamble Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  offersPreamble      Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 }

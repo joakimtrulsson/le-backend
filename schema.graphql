@@ -457,34 +457,34 @@ type SiteConfig {
   siteTitle: String
   heroPreamble: SiteConfig_heroPreamble_Document
   heroImage: ImageFieldOutput
-  projectsPreabmle: SiteConfig_projectsPreabmle_Document
-  productsPreabmle: SiteConfig_productsPreabmle_Document
-  reviewsPreabmle: SiteConfig_reviewsPreabmle_Document
-  ourServicesPreabmle: SiteConfig_ourServicesPreabmle_Document
-  offersPreabmle: SiteConfig_offersPreabmle_Document
+  projectsPreamble: SiteConfig_projectsPreamble_Document
+  productsPreamble: SiteConfig_productsPreamble_Document
+  reviewsPreamble: SiteConfig_reviewsPreamble_Document
+  ourServicesPreamble: SiteConfig_ourServicesPreamble_Document
+  offersPreamble: SiteConfig_offersPreamble_Document
 }
 
 type SiteConfig_heroPreamble_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
-type SiteConfig_projectsPreabmle_Document {
+type SiteConfig_projectsPreamble_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
-type SiteConfig_productsPreabmle_Document {
+type SiteConfig_productsPreamble_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
-type SiteConfig_reviewsPreabmle_Document {
+type SiteConfig_reviewsPreamble_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
-type SiteConfig_ourServicesPreabmle_Document {
+type SiteConfig_ourServicesPreamble_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
-type SiteConfig_offersPreabmle_Document {
+type SiteConfig_offersPreamble_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
@@ -509,11 +509,11 @@ input SiteConfigUpdateInput {
   siteTitle: String
   heroPreamble: JSON
   heroImage: ImageFieldInput
-  projectsPreabmle: JSON
-  productsPreabmle: JSON
-  reviewsPreabmle: JSON
-  ourServicesPreabmle: JSON
-  offersPreabmle: JSON
+  projectsPreamble: JSON
+  productsPreamble: JSON
+  reviewsPreamble: JSON
+  ourServicesPreamble: JSON
+  offersPreamble: JSON
 }
 
 input SiteConfigUpdateArgs {
@@ -525,11 +525,11 @@ input SiteConfigCreateInput {
   siteTitle: String
   heroPreamble: JSON
   heroImage: ImageFieldInput
-  projectsPreabmle: JSON
-  productsPreabmle: JSON
-  reviewsPreabmle: JSON
-  ourServicesPreabmle: JSON
-  offersPreabmle: JSON
+  projectsPreamble: JSON
+  productsPreamble: JSON
+  reviewsPreamble: JSON
+  ourServicesPreamble: JSON
+  offersPreamble: JSON
 }
 
 """

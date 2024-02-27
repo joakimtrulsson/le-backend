@@ -40,7 +40,7 @@ export const siteConfigSchema = list({
 
     heroImage: image({ storage: 's3_image' }),
 
-    projectsPreabmle: document({
+    projectsPreamble: document({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -55,7 +55,7 @@ export const siteConfigSchema = list({
       },
     }),
 
-    productsPreabmle: document({
+    productsPreamble: document({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -70,7 +70,7 @@ export const siteConfigSchema = list({
       },
     }),
 
-    reviewsPreabmle: document({
+    reviewsPreamble: document({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -85,7 +85,7 @@ export const siteConfigSchema = list({
       },
     }),
 
-    ourServicesPreabmle: document({
+    ourServicesPreamble: document({
       formatting: {
         inlineMarks: {
           bold: true,
@@ -100,7 +100,7 @@ export const siteConfigSchema = list({
       },
     }),
 
-    offersPreabmle: document({
+    offersPreamble: document({
       formatting: {
         inlineMarks: {
           bold: true,
