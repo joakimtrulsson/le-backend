@@ -20,22 +20,33 @@ export const projectSchema = list({
   },
   ui: {
     labelField: 'projectTitle',
+    listView: {
+      initialColumns: ['projectTitle', 'shortDescription', 'location'],
+      initialSort: { field: 'projectTitle', direction: 'ASC' },
+      pageSize: 50,
+    },
   },
   fields: {
-    projectTitle: text({ validation: { isRequired: true } }),
+    projectTitle: text({ label: 'Projekttitel', validation: { isRequired: true } }),
 
-    shortDescription: text({ validation: { isRequired: true, length: { max: 100 } } }),
+    shortDescription: text({
+      label: 'Kort beskrivning',
+      validation: { isRequired: true, length: { max: 100 } },
+    }),
 
-    fullDescription: text({ validation: { isRequired: true } }),
+    fullDescription: text({
+      label: 'Lång beskrivning',
+      validation: { isRequired: true },
+    }),
 
-    projectImage: image({ storage: 's3_image' }),
+    projectImage: image({ label: 'Projektbild', storage: 's3_image' }),
 
-    date: calendarDay({ validation: { isRequired: true } }),
+    date: calendarDay({ label: 'Datum', validation: { isRequired: true } }),
 
-    location: text({ validation: { isRequired: true } }),
+    location: text({ label: 'Plats', validation: { isRequired: true } }),
 
     icon: json({
-      label: 'Icon',
+      label: 'Ikon',
       ui: {
         views: './customViews/IconPickerField.tsx',
         createView: { fieldMode: 'edit' },

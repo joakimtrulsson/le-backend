@@ -315,11 +315,16 @@ var productSchema = (0, import_core3.list)({
     }
   },
   fields: {
-    productTitle: (0, import_fields3.text)({ isIndexed: "unique", validation: { isRequired: true } }),
-    description: (0, import_fields3.text)({ validation: { isRequired: true } }),
-    productImage: (0, import_fields3.image)({ storage: "s3_image" }),
-    price: (0, import_fields3.integer)({ validation: { isRequired: true } }),
+    productTitle: (0, import_fields3.text)({
+      label: "Produkttitel",
+      isIndexed: "unique",
+      validation: { isRequired: true }
+    }),
+    description: (0, import_fields3.text)({ label: "Produktbeskrivning", validation: { isRequired: true } }),
+    productImage: (0, import_fields3.image)({ label: "Produktbild", storage: "s3_image" }),
+    price: (0, import_fields3.integer)({ label: "Pris", validation: { isRequired: true } }),
     priceUnit: (0, import_fields3.select)({
+      label: "Prisenhet",
       options: [
         { label: "Kr", value: "kr" },
         { label: "Per kubik", value: "perkubik" },
@@ -331,11 +336,13 @@ var productSchema = (0, import_core3.list)({
       ui: { displayMode: "segmented-control" }
     }),
     discountPrice: (0, import_fields3.integer)({
+      label: "Rabattpris",
       ui: {
         description: "Om discount pris \xE4r satt, produkten visas i Erbjudande-sektionen."
       }
     }),
     recommendedProduct: (0, import_fields3.select)({
+      label: "Rekommenderad produkt?",
       options: [
         { label: "Ja", value: "yes" },
         { label: "Nej", value: "no" }
@@ -378,17 +385,28 @@ var projectSchema = (0, import_core4.list)({
     }
   },
   ui: {
-    labelField: "projectTitle"
+    labelField: "projectTitle",
+    listView: {
+      initialColumns: ["projectTitle", "shortDescription", "location"],
+      initialSort: { field: "projectTitle", direction: "ASC" },
+      pageSize: 50
+    }
   },
   fields: {
-    projectTitle: (0, import_fields4.text)({ validation: { isRequired: true } }),
-    shortDescription: (0, import_fields4.text)({ validation: { isRequired: true, length: { max: 100 } } }),
-    fullDescription: (0, import_fields4.text)({ validation: { isRequired: true } }),
-    projectImage: (0, import_fields4.image)({ storage: "s3_image" }),
-    date: (0, import_fields4.calendarDay)({ validation: { isRequired: true } }),
-    location: (0, import_fields4.text)({ validation: { isRequired: true } }),
+    projectTitle: (0, import_fields4.text)({ label: "Projekttitel", validation: { isRequired: true } }),
+    shortDescription: (0, import_fields4.text)({
+      label: "Kort beskrivning",
+      validation: { isRequired: true, length: { max: 100 } }
+    }),
+    fullDescription: (0, import_fields4.text)({
+      label: "L\xE5ng beskrivning",
+      validation: { isRequired: true }
+    }),
+    projectImage: (0, import_fields4.image)({ label: "Projektbild", storage: "s3_image" }),
+    date: (0, import_fields4.calendarDay)({ label: "Datum", validation: { isRequired: true } }),
+    location: (0, import_fields4.text)({ label: "Plats", validation: { isRequired: true } }),
     icon: (0, import_fields4.json)({
-      label: "Icon",
+      label: "Ikon",
       ui: {
         views: "./customViews/IconPickerField.tsx",
         createView: { fieldMode: "edit" },
@@ -421,10 +439,10 @@ var reviewSchema = (0, import_core5.list)({
     labelField: "reviewBy"
   },
   fields: {
-    reviewBy: (0, import_fields5.text)({ validation: { isRequired: true } }),
-    reviewText: (0, import_fields5.text)({ validation: { isRequired: true } }),
-    date: (0, import_fields5.calendarDay)({ validation: { isRequired: true } }),
-    location: (0, import_fields5.text)({ validation: { isRequired: true } })
+    reviewBy: (0, import_fields5.text)({ label: "Skriven av", validation: { isRequired: true } }),
+    reviewText: (0, import_fields5.text)({ label: "Omd\xF6me", validation: { isRequired: true } }),
+    date: (0, import_fields5.calendarDay)({ label: "Datum", validation: { isRequired: true } }),
+    location: (0, import_fields5.text)({ label: "Plats", validation: { isRequired: true } })
   }
 });
 
@@ -449,7 +467,10 @@ var siteConfigSchema = (0, import_core6.list)({
   },
   isSingleton: true,
   fields: {
-    siteTitle: (0, import_fields6.text)({ validation: { isRequired: true } }),
+    siteTitle: (0, import_fields6.text)({
+      label: "Hero titel",
+      validation: { isRequired: true }
+    }),
     heroPreamble: (0, import_fields_document.document)({
       formatting: {
         inlineMarks: {
@@ -464,8 +485,9 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    heroImage: (0, import_fields6.image)({ storage: "s3_image" }),
+    heroImage: (0, import_fields6.image)({ label: "Hero bild", storage: "s3_image" }),
     projectsPreamble: (0, import_fields_document.document)({
+      label: "Projekt f\xF6rord",
       formatting: {
         inlineMarks: {
           bold: true,
@@ -480,6 +502,7 @@ var siteConfigSchema = (0, import_core6.list)({
       }
     }),
     productsPreamble: (0, import_fields_document.document)({
+      label: "Produkt f\xF6rord",
       formatting: {
         inlineMarks: {
           bold: true,
@@ -494,6 +517,7 @@ var siteConfigSchema = (0, import_core6.list)({
       }
     }),
     reviewsPreamble: (0, import_fields_document.document)({
+      label: "Omd\xF6men f\xF6rord",
       formatting: {
         inlineMarks: {
           bold: true,
@@ -508,6 +532,7 @@ var siteConfigSchema = (0, import_core6.list)({
       }
     }),
     ourServicesPreamble: (0, import_fields_document.document)({
+      label: "V\xE5ra tj\xE4nster f\xF6rord",
       formatting: {
         inlineMarks: {
           bold: true,
@@ -522,6 +547,7 @@ var siteConfigSchema = (0, import_core6.list)({
       }
     }),
     offersPreamble: (0, import_fields_document.document)({
+      label: "V\xE5ra erbjudande f\xF6rord",
       formatting: {
         inlineMarks: {
           bold: true,

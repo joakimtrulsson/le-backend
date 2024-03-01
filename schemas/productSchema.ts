@@ -33,15 +33,20 @@ export const productSchema = list({
     },
   },
   fields: {
-    productTitle: text({ isIndexed: 'unique', validation: { isRequired: true } }),
+    productTitle: text({
+      label: 'Produkttitel',
+      isIndexed: 'unique',
+      validation: { isRequired: true },
+    }),
 
-    description: text({ validation: { isRequired: true } }),
+    description: text({ label: 'Produktbeskrivning', validation: { isRequired: true } }),
 
-    productImage: image({ storage: 's3_image' }),
+    productImage: image({ label: 'Produktbild', storage: 's3_image' }),
 
-    price: integer({ validation: { isRequired: true } }),
+    price: integer({ label: 'Pris', validation: { isRequired: true } }),
 
     priceUnit: select({
+      label: 'Prisenhet',
       options: [
         { label: 'Kr', value: 'kr' },
         { label: 'Per kubik', value: 'perkubik' },
@@ -54,12 +59,14 @@ export const productSchema = list({
     }),
 
     discountPrice: integer({
+      label: 'Rabattpris',
       ui: {
         description: 'Om discount pris är satt, produkten visas i Erbjudande-sektionen.',
       },
     }),
 
     recommendedProduct: select({
+      label: 'Rekommenderad produkt?',
       options: [
         { label: 'Ja', value: 'yes' },
         { label: 'Nej', value: 'no' },

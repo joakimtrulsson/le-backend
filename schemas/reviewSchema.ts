@@ -22,12 +22,12 @@ export const reviewSchema = list({
     labelField: 'reviewBy',
   },
   fields: {
-    reviewBy: text({ validation: { isRequired: true } }),
+    reviewBy: text({ label: 'Skriven av', validation: { isRequired: true } }),
 
-    reviewText: text({ validation: { isRequired: true } }),
+    reviewText: text({ label: 'Omdöme', validation: { isRequired: true } }),
 
-    date: calendarDay({ validation: { isRequired: true } }),
+    date: calendarDay({ label: 'Datum', validation: { isRequired: true } }),
 
-    location: text({ validation: { isRequired: true } }),
+    location: text({ label: 'Plats', validation: { isRequired: true } }),
   },
 });

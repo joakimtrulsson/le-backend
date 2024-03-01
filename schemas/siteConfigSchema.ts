@@ -21,7 +21,10 @@ export const siteConfigSchema = list({
   },
   isSingleton: true,
   fields: {
-    siteTitle: text({ validation: { isRequired: true } }),
+    siteTitle: text({
+      label: 'Hero titel',
+      validation: { isRequired: true },
+    }),
 
     heroPreamble: document({
       formatting: {
@@ -38,9 +41,10 @@ export const siteConfigSchema = list({
       },
     }),
 
-    heroImage: image({ storage: 's3_image' }),
+    heroImage: image({ label: 'Hero bild', storage: 's3_image' }),
 
     projectsPreamble: document({
+      label: 'Projekt förord',
       formatting: {
         inlineMarks: {
           bold: true,
@@ -56,6 +60,7 @@ export const siteConfigSchema = list({
     }),
 
     productsPreamble: document({
+      label: 'Produkt förord',
       formatting: {
         inlineMarks: {
           bold: true,
@@ -71,6 +76,7 @@ export const siteConfigSchema = list({
     }),
 
     reviewsPreamble: document({
+      label: 'Omdömen förord',
       formatting: {
         inlineMarks: {
           bold: true,
@@ -86,6 +92,7 @@ export const siteConfigSchema = list({
     }),
 
     ourServicesPreamble: document({
+      label: 'Våra tjänster förord',
       formatting: {
         inlineMarks: {
           bold: true,
@@ -101,6 +108,7 @@ export const siteConfigSchema = list({
     }),
 
     offersPreamble: document({
+      label: 'Våra erbjudande förord',
       formatting: {
         inlineMarks: {
           bold: true,
