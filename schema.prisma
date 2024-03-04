@@ -105,3 +105,14 @@ model SiteConfig {
   ourServicesPreamble  Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   offersPreamble       Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 }
+
+model Order {
+  id            String    @id @default(uuid()) @postgresql.Uuid
+  customerName  String    @default("")
+  customerEmail String    @default("")
+  orderDetails  Json?
+  amount        Int
+  paymentId     String    @default("")
+  createdAt     DateTime? @default(now())
+  status        String    @default("notpayed")
+}

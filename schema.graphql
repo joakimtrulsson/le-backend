@@ -541,6 +541,82 @@ input SiteConfigCreateInput {
   offersPreamble: JSON
 }
 
+type Order {
+  id: ID!
+  customerName: String
+  customerEmail: String
+  orderDetails: JSON
+  amount: Int
+  paymentId: String
+  createdAt: DateTime
+  status: String
+}
+
+scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+
+input OrderWhereUniqueInput {
+  id: ID
+}
+
+input OrderWhereInput {
+  AND: [OrderWhereInput!]
+  OR: [OrderWhereInput!]
+  NOT: [OrderWhereInput!]
+  id: IDFilter
+  customerName: StringFilter
+  customerEmail: StringFilter
+  amount: IntFilter
+  paymentId: StringFilter
+  createdAt: DateTimeNullableFilter
+  status: StringFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
+}
+
+input OrderOrderByInput {
+  id: OrderDirection
+  customerName: OrderDirection
+  customerEmail: OrderDirection
+  amount: OrderDirection
+  paymentId: OrderDirection
+  createdAt: OrderDirection
+  status: OrderDirection
+}
+
+input OrderUpdateInput {
+  customerName: String
+  customerEmail: String
+  orderDetails: JSON
+  amount: Int
+  paymentId: String
+  createdAt: DateTime
+  status: String
+}
+
+input OrderUpdateArgs {
+  where: OrderWhereUniqueInput!
+  data: OrderUpdateInput!
+}
+
+input OrderCreateInput {
+  customerName: String
+  customerEmail: String
+  orderDetails: JSON
+  amount: Int
+  paymentId: String
+  createdAt: DateTime
+  status: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -583,6 +659,12 @@ type Mutation {
   updateSiteConfigs(data: [SiteConfigUpdateArgs!]!): [SiteConfig]
   deleteSiteConfig(where: SiteConfigWhereUniqueInput! = {id: 1}): SiteConfig
   deleteSiteConfigs(where: [SiteConfigWhereUniqueInput!]!): [SiteConfig]
+  createOrder(data: OrderCreateInput!): Order
+  createOrders(data: [OrderCreateInput!]!): [Order]
+  updateOrder(where: OrderWhereUniqueInput!, data: OrderUpdateInput!): Order
+  updateOrders(data: [OrderUpdateArgs!]!): [Order]
+  deleteOrder(where: OrderWhereUniqueInput!): Order
+  deleteOrders(where: [OrderWhereUniqueInput!]!): [Order]
   endSession: Boolean!
   authenticateUserWithPassword(name: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -623,6 +705,9 @@ type Query {
   siteConfigs(where: SiteConfigWhereInput! = {id: {equals: 1}}, orderBy: [SiteConfigOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SiteConfigWhereUniqueInput): [SiteConfig!]
   siteConfig(where: SiteConfigWhereUniqueInput! = {id: 1}): SiteConfig
   siteConfigsCount(where: SiteConfigWhereInput! = {id: {equals: 1}}): Int
+  orders(where: OrderWhereInput! = {}, orderBy: [OrderOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: OrderWhereUniqueInput): [Order!]
+  order(where: OrderWhereUniqueInput!): Order
+  ordersCount(where: OrderWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

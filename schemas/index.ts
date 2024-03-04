@@ -5,3 +5,4 @@ export { productSchema as Product } from './productSchema';
 export { projectSchema as Project } from './projectSchema';
 export { reviewSchema as Review } from './reviewSchema';
 export { siteConfigSchema as SiteConfig } from './siteConfigSchema';
+export { orderSchema as Order } from './orderSchema';

@@ -119,7 +119,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core7 = require("@keystone-6/core");
+var import_core8 = require("@keystone-6/core");
 var import_session2 = require("@keystone-6/core/session");
 var import_dotenv = __toESM(require("dotenv"));
 var import_express = __toESM(require("express"));
@@ -568,6 +568,66 @@ var siteConfigSchema = (0, import_core6.list)({
   }
 });
 
+// schemas/orderSchema.ts
+var import_core7 = require("@keystone-6/core");
+var import_fields7 = require("@keystone-6/core/fields");
+var import_access13 = require("@keystone-6/core/access");
+var orderSchema = (0, import_core7.list)({
+  access: {
+    operation: {
+      ...(0, import_access13.allOperations)(isSignedIn),
+      create: permissions.canCreateItems,
+      query: () => true
+    },
+    filter: {
+      query: () => true,
+      // query: rules.canReadItems,
+      update: rules.canManageItems,
+      delete: rules.canManageItems
+    }
+  },
+  ui: {
+    labelField: "productTitle",
+    listView: {
+      initialColumns: [
+        "id",
+        "customerName",
+        "customerEmail",
+        "createdAt",
+        "amount",
+        "status"
+      ],
+      initialSort: { field: "productTitle", direction: "ASC" },
+      pageSize: 50
+    }
+  },
+  fields: {
+    customerName: (0, import_fields7.text)({
+      label: "Kundnamn",
+      validation: { isRequired: true }
+    }),
+    customerEmail: (0, import_fields7.text)({
+      label: "Kundemail",
+      validation: { isRequired: true }
+    }),
+    orderDetails: (0, import_fields7.json)({ label: "Produkter" }),
+    amount: (0, import_fields7.integer)({ label: "Summa", validation: { isRequired: true } }),
+    paymentId: (0, import_fields7.text)({ label: "Betalningsreferens" }),
+    createdAt: (0, import_fields7.timestamp)({
+      defaultValue: { kind: "now" }
+    }),
+    status: (0, import_fields7.select)({
+      options: [
+        { label: "Betald", value: "confirmed" },
+        { label: "Ej betald", value: "notpayed" }
+      ],
+      validation: { isRequired: true },
+      defaultValue: "notpayed",
+      ui: { displayMode: "segmented-control" }
+    })
+  }
+});
+
 // schema.ts
 var lists = {
   User: userSchema,
@@ -575,7 +635,8 @@ var lists = {
   Product: productSchema,
   Project: projectSchema,
   Review: reviewSchema,
-  SiteConfig: siteConfigSchema
+  SiteConfig: siteConfigSchema,
+  Order: orderSchema
 };
 
 // keystone.ts
@@ -635,7 +696,7 @@ var {
   BUCKETEER_AWS_SECRET_ACCESS_KEY: secretAccessKey
 } = process.env;
 var keystone_default = withAuth(
-  (0, import_core7.config)({
+  (0, import_core8.config)({
     db: {
       provider: "postgresql",
       url: HEROKU_POSTGRESQL_BROWN_URL,

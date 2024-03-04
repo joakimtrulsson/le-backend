@@ -1,4 +1,4 @@
-import { User, Role, Product, Project, Review, SiteConfig } from './schemas/index';
+import { User, Role, Product, Project, Review, SiteConfig, Order } from './schemas/index';
 
 export const lists = {
   User,
@@ -7,4 +7,5 @@ export const lists = {
   Project,
   Review,
   SiteConfig,
+  Order,
 };
