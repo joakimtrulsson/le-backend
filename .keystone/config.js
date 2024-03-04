@@ -472,6 +472,7 @@ var siteConfigSchema = (0, import_core6.list)({
       validation: { isRequired: true }
     }),
     heroPreamble: (0, import_fields_document.document)({
+      links: true,
       formatting: {
         inlineMarks: {
           bold: true,
@@ -485,7 +486,10 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    heroImage: (0, import_fields6.image)({ label: "Hero bild", storage: "s3_image" }),
+    heroImage1: (0, import_fields6.image)({ label: "Hero bild 1", storage: "s3_image" }),
+    heroImage2: (0, import_fields6.image)({ label: "Hero bild 2", storage: "s3_image" }),
+    heroImage3: (0, import_fields6.image)({ label: "Hero bild 3", storage: "s3_image" }),
+    heroImage4: (0, import_fields6.image)({ label: "Hero bild 4", storage: "s3_image" }),
     projectsPreamble: (0, import_fields_document.document)({
       label: "Projekt f\xF6rord",
       formatting: {

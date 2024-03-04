@@ -27,6 +27,7 @@ export const siteConfigSchema = list({
     }),
 
     heroPreamble: document({
+      links: true,
       formatting: {
         inlineMarks: {
           bold: true,
@@ -41,7 +42,10 @@ export const siteConfigSchema = list({
       },
     }),
 
-    heroImage: image({ label: 'Hero bild', storage: 's3_image' }),
+    heroImage1: image({ label: 'Hero bild 1', storage: 's3_image' }),
+    heroImage2: image({ label: 'Hero bild 2', storage: 's3_image' }),
+    heroImage3: image({ label: 'Hero bild 3', storage: 's3_image' }),
+    heroImage4: image({ label: 'Hero bild 4', storage: 's3_image' }),
 
     projectsPreamble: document({
       label: 'Projekt förord',

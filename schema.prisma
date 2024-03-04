@@ -76,17 +76,32 @@ model Review {
 }
 
 model SiteConfig {
-  id                  Int     @id
-  siteTitle           String  @default("")
-  heroPreamble        Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  heroImage_filesize  Int?
-  heroImage_extension String?
-  heroImage_width     Int?
-  heroImage_height    Int?
-  heroImage_id        String?
-  projectsPreamble    Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  productsPreamble    Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  reviewsPreamble     Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  ourServicesPreamble Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  offersPreamble      Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  id                   Int     @id
+  siteTitle            String  @default("")
+  heroPreamble         Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  heroImage1_filesize  Int?
+  heroImage1_extension String?
+  heroImage1_width     Int?
+  heroImage1_height    Int?
+  heroImage1_id        String?
+  heroImage2_filesize  Int?
+  heroImage2_extension String?
+  heroImage2_width     Int?
+  heroImage2_height    Int?
+  heroImage2_id        String?
+  heroImage3_filesize  Int?
+  heroImage3_extension String?
+  heroImage3_width     Int?
+  heroImage3_height    Int?
+  heroImage3_id        String?
+  heroImage4_filesize  Int?
+  heroImage4_extension String?
+  heroImage4_width     Int?
+  heroImage4_height    Int?
+  heroImage4_id        String?
+  projectsPreamble     Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  productsPreamble     Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  reviewsPreamble      Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  ourServicesPreamble  Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  offersPreamble       Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 }

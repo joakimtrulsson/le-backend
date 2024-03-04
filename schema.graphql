@@ -456,7 +456,10 @@ type SiteConfig {
   id: ID!
   siteTitle: String
   heroPreamble: SiteConfig_heroPreamble_Document
-  heroImage: ImageFieldOutput
+  heroImage1: ImageFieldOutput
+  heroImage2: ImageFieldOutput
+  heroImage3: ImageFieldOutput
+  heroImage4: ImageFieldOutput
   projectsPreamble: SiteConfig_projectsPreamble_Document
   productsPreamble: SiteConfig_productsPreamble_Document
   reviewsPreamble: SiteConfig_reviewsPreamble_Document
@@ -508,7 +511,10 @@ input SiteConfigOrderByInput {
 input SiteConfigUpdateInput {
   siteTitle: String
   heroPreamble: JSON
-  heroImage: ImageFieldInput
+  heroImage1: ImageFieldInput
+  heroImage2: ImageFieldInput
+  heroImage3: ImageFieldInput
+  heroImage4: ImageFieldInput
   projectsPreamble: JSON
   productsPreamble: JSON
   reviewsPreamble: JSON
@@ -524,7 +530,10 @@ input SiteConfigUpdateArgs {
 input SiteConfigCreateInput {
   siteTitle: String
   heroPreamble: JSON
-  heroImage: ImageFieldInput
+  heroImage1: ImageFieldInput
+  heroImage2: ImageFieldInput
+  heroImage3: ImageFieldInput
+  heroImage4: ImageFieldInput
   projectsPreamble: JSON
   productsPreamble: JSON
   reviewsPreamble: JSON
