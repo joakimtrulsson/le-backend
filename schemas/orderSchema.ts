@@ -35,27 +35,32 @@ export const orderSchema = list({
       }
     },
     afterOperation: async ({ operation, item, resolvedData }) => {
-      if (operation === 'create') {
-        const fromEmail = `${process.env.EMAIL_FROM}}`;
-        const { customerName, customerEmail, amount, orderDetails, createdAt } =
-          resolvedData;
-        const { id } = item;
+      console.log('skicka mail');
+      try {
+        if (operation === 'create') {
+          const fromEmail = `${process.env.EMAIL_FROM}}`;
+          const { customerName, customerEmail, amount, orderDetails, createdAt } =
+            resolvedData;
+          const { id } = item;
 
-        const mailData = {
-          targetEmail: customerEmail,
-          name: customerName,
-          amount: amount,
-          orderDetails: orderDetails,
-          orderId: id.toString(),
-          createdAt,
-          phoneNr: '',
-          contactEmail: '',
-          message: '',
-          ip: '',
-        };
+          const mailData = {
+            targetEmail: customerEmail,
+            name: customerName,
+            amount: amount,
+            orderDetails: orderDetails,
+            orderId: id.toString(),
+            createdAt,
+            phoneNr: '',
+            contactEmail: '',
+            message: '',
+            ip: '',
+          };
 
-        // Skicka ett email till kunden
-        await new Email(fromEmail, mailData).sendOrderConfirmation();
+          // Skicka ett email till kunden
+          await new Email(fromEmail, mailData).sendOrderConfirmation();
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },
