@@ -11,7 +11,6 @@ export const checkoutSession = async (
 ) => {
   try {
     const { products, customerData } = req.body;
-    console.log('skapa checkout-session');
 
     const productQueries = products.map((product: { id: string; quantity: number }) =>
       commonContext.query.Product.findOne({

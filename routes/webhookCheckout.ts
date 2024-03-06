@@ -19,7 +19,6 @@ export const webhookCheckout = async (
   commonContext: Context
 ) => {
   const signature = req.headers['stripe-signature'];
-  console.log('webhook checkout');
 
   let event;
   try {
