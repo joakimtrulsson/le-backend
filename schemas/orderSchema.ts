@@ -1,35 +1,68 @@
 import { list } from '@keystone-6/core';
 import { text, integer, select, timestamp, json } from '@keystone-6/core/fields';
+import Stripe from 'stripe';
 
 import { allOperations } from '@keystone-6/core/access';
-import { isSignedIn, permissions, rules } from '../auth/access';
+import { isSignedIn, rules } from '../auth/access';
+import { Email } from '../utils/email';
+
+const stripe = new Stripe(process.env.STRIPE_WEBHOOK_SECRET as string);
 
 export const orderSchema = list({
   access: {
     operation: {
       ...allOperations(isSignedIn),
-      create: permissions.canCreateItems,
+      create: () => true,
       query: () => true,
     },
     filter: {
       query: () => true,
-      // query: rules.canReadItems,
       update: rules.canManageItems,
       delete: rules.canManageItems,
     },
   },
+  hooks: {
+    resolveInput: async ({ operation, resolvedData, inputData }) => {
+      if (operation === 'create') {
+        const session = await stripe.checkout.sessions.retrieve(inputData.paymentId);
+
+        if (session.payment_status === 'paid') {
+          return resolvedData;
+        } else {
+          throw new Error('Payment verification failed');
+        }
+      }
+    },
+    afterOperation: async ({ operation, item, resolvedData }) => {
+      if (operation === 'create') {
+        const fromEmail = `${process.env.EMAIL_FROM}}`;
+        const { customerName, customerEmail, amount, orderDetails, createdAt } =
+          resolvedData;
+        const { id } = item;
+
+        const mailData = {
+          targetEmail: customerEmail,
+          name: customerName,
+          amount: amount,
+          orderDetails: orderDetails,
+          orderId: id.toString(),
+          createdAt,
+          phoneNr: '',
+          contactEmail: '',
+          message: '',
+          ip: '',
+        };
+
+        // Skicka ett email till kunden
+        await new Email(fromEmail, mailData).sendOrderConfirmation();
+      }
+    },
+  },
   ui: {
-    labelField: 'productTitle',
+    labelField: 'customerName',
     listView: {
-      initialColumns: [
-        'id',
-        'customerName',
-        'customerEmail',
-        'createdAt',
-        'amount',
-        'status',
-      ],
-      initialSort: { field: 'productTitle', direction: 'ASC' },
+      initialColumns: ['customerName', 'customerEmail', 'createdAt', 'amount', 'status'],
+      initialSort: { field: 'customerName', direction: 'ASC' },
       pageSize: 50,
     },
   },
@@ -46,9 +79,25 @@ export const orderSchema = list({
 
     orderDetails: json({ label: 'Produkter' }),
 
-    amount: integer({ label: 'Summa', validation: { isRequired: true } }),
+    amount: integer({
+      label: 'Summa',
+      validation: { isRequired: true },
+      hooks: {
+        resolveInput: ({ operation, resolvedData, inputData }) => {
+          if (operation === 'create') {
+            return resolvedData.amount / 100;
+          }
+        },
+      },
+    }),
 
-    paymentId: text({ label: 'Betalningsreferens' }),
+    paymentId: text({
+      label: 'Betalningsreferens',
+      isIndexed: 'unique',
+      validation: { isRequired: true },
+    }),
+
+    cardName: text({ label: 'Kortinnehavare' }),
 
     createdAt: timestamp({
       defaultValue: { kind: 'now' },

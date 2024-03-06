@@ -112,7 +112,8 @@ model Order {
   customerEmail String    @default("")
   orderDetails  Json?
   amount        Int
-  paymentId     String    @default("")
+  paymentId     String    @unique @default("")
+  cardName      String    @default("")
   createdAt     DateTime? @default(now())
   status        String    @default("notpayed")
 }

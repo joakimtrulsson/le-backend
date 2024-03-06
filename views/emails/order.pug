@@ -1,0 +1,27 @@
+extends baseEmail
+block content
+
+  h2 Tack för din beställning,  #{name}.
+  p Order id: #{id}
+  p Orderdatum: #{new Date(createdAt).toISOString().split('T')[0] + ' ' + new Date(createdAt).getHours() + ':' + new Date(createdAt).getMinutes()}
+
+  h3 Produkter som beställts:
+  table
+    tr
+      th(style="text-align: left;") Produkt
+      th(style="text-align: left;") Antal
+      th(style="text-align: left;") Pris
+    each product in products
+      tr
+        td= product.description
+        td= product.quantity
+        td= (product.price.unit_amount/100) + "kr"
+
+  //- ul
+  //-   each product in products
+  //-   li= product.description + " Antal: " + product.quantity + " Pris: " + (product.price.unit_amount/100) + "kr"
+
+  p Totalt: #{amount}kr
+  p Vi kommer att kontakta dig inom kort för att boka in en leveranstid.
+  
+  

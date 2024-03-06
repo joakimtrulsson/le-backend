@@ -1,10 +1,19 @@
-import Email from '../utils/email';
+import type { Request, Response } from 'express';
 
-const sendEmail = async (req, res) => {
+import { Email } from '../utils/email';
+
+interface MailData {
+  targetEmail: string;
+  name: string;
+  phoneNr: string;
+  contactEmail: string;
+  message: string;
+  ip: string;
+}
+
+export const sendEmail = async (req: Request, res: Response) => {
   try {
     const fromEmail = `${process.env.EMAIL_FROM}}`;
-
-    // reCaptcha - verify token https://developers.google.com/recaptcha/docs/verify
 
     if (
       !req.body.name ||
@@ -18,21 +27,18 @@ const sendEmail = async (req, res) => {
       });
     }
 
-    const mailData = {
+    const mailData: MailData = {
       targetEmail: fromEmail,
       name: req.body.name,
       contactEmail: req.body.contactEmail,
       phoneNr: req.body.phoneNr,
       message: req.body.message,
-      ip: req.connection.remoteAddress,
+      ip: req.connection.remoteAddress || '', // Ensure that ip is always a string
     };
     await new Email(fromEmail, mailData).sendContactUs();
 
     res.status(200).send({ success: true, message: 'Email sent' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: err.message });
+  } catch (error) {
+    res.status(500).json({ success: false, message: (error as Error).message });
   }
 };
-
-module.exports = sendEmail;

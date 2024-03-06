@@ -548,6 +548,7 @@ type Order {
   orderDetails: JSON
   amount: Int
   paymentId: String
+  cardName: String
   createdAt: DateTime
   status: String
 }
@@ -556,6 +557,7 @@ scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339
 
 input OrderWhereUniqueInput {
   id: ID
+  paymentId: String
 }
 
 input OrderWhereInput {
@@ -567,6 +569,7 @@ input OrderWhereInput {
   customerEmail: StringFilter
   amount: IntFilter
   paymentId: StringFilter
+  cardName: StringFilter
   createdAt: DateTimeNullableFilter
   status: StringFilter
 }
@@ -588,6 +591,7 @@ input OrderOrderByInput {
   customerEmail: OrderDirection
   amount: OrderDirection
   paymentId: OrderDirection
+  cardName: OrderDirection
   createdAt: OrderDirection
   status: OrderDirection
 }
@@ -598,6 +602,7 @@ input OrderUpdateInput {
   orderDetails: JSON
   amount: Int
   paymentId: String
+  cardName: String
   createdAt: DateTime
   status: String
 }
@@ -613,6 +618,7 @@ input OrderCreateInput {
   orderDetails: JSON
   amount: Int
   paymentId: String
+  cardName: String
   createdAt: DateTime
   status: String
 }

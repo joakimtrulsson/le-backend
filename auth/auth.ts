@@ -2,6 +2,10 @@ import { createAuth } from '@keystone-6/auth';
 
 import { statelessSessions } from '@keystone-6/core/session';
 
+let sessionSecret = process.env.SESSION_SECRET;
+
+const sessionMaxAge = process.env.SESSION_MAX_AGE;
+
 // withAuth är en funktion runt base config.
 const { withAuth } = createAuth({
   listKey: 'User',
@@ -43,4 +47,9 @@ const { withAuth } = createAuth({
     }`,
 });
 
-export { withAuth, statelessSessions };
+const session = statelessSessions({
+  maxAge: Number(sessionMaxAge),
+  secret: sessionSecret,
+});
+
+export { withAuth, session };

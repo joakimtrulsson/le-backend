@@ -5,9 +5,6 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -30,89 +27,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// utils/email.js
-var require_email = __commonJS({
-  "utils/email.js"(exports2, module2) {
-    "use strict";
-    var import_nodemailer = __toESM(require("nodemailer"));
-    var import_pug = __toESM(require("pug"));
-    var import_html_to_text = require("html-to-text");
-    module2.exports = class Email {
-      constructor(fromEmail, mailData) {
-        this.to = mailData.targetEmail, this.name = mailData.name, this.phoneNr = mailData.phoneNr, this.contactEmail = mailData.contactEmail, this.message = mailData.message, this.from = fromEmail;
-        this.ip = mailData.ip;
-      }
-      newTransport() {
-        return import_nodemailer.default.createTransport({
-          host: process.env.EMAIL_HOST,
-          port: process.env.EMAIL_PORT,
-          secure: false,
-          // logger: true,
-          auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-          }
-        });
-      }
-      // Skickar mailet.
-      async send(template, subject) {
-        const html = import_pug.default.renderFile(`${__dirname}/../views/emails/${template}.pug`, {
-          name: this.name,
-          contactEmail: this.contactEmail,
-          message: this.message,
-          phoneNr: this.phoneNr,
-          ip: this.ip,
-          subject
-        });
-        const mailOptions = {
-          from: this.from,
-          to: this.to,
-          subject,
-          html,
-          text: (0, import_html_to_text.htmlToText)(html)
-        };
-        await this.newTransport().sendMail(mailOptions);
-      }
-      async sendContactUs() {
-        await this.send("contact", "Meddelande fr\xE5n hemsidan!");
-      }
-    };
-  }
-});
-
-// routes/emailRoutes.js
-var require_emailRoutes = __commonJS({
-  "routes/emailRoutes.js"(exports2, module2) {
-    "use strict";
-    var import_email = __toESM(require_email());
-    var sendEmail2 = async (req, res) => {
-      try {
-        const fromEmail = `${process.env.EMAIL_FROM}}`;
-        if (!req.body.name || !req.body.contactEmail || !req.body.phoneNr || !req.body.message) {
-          return res.status(400).send({
-            succuess: false,
-            message: "Missing or invalid required fields"
-          });
-        }
-        const mailData = {
-          targetEmail: fromEmail,
-          name: req.body.name,
-          contactEmail: req.body.contactEmail,
-          phoneNr: req.body.phoneNr,
-          message: req.body.message,
-          ip: req.connection.remoteAddress
-        };
-        await new import_email.default(fromEmail, mailData).sendContactUs();
-        res.status(200).send({ success: true, message: "Email sent" });
-      } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: err.message });
-      }
-    };
-    module2.exports = sendEmail2;
-  }
-});
-
 // keystone.ts
 var keystone_exports = {};
 __export(keystone_exports, {
@@ -130,44 +44,44 @@ var import_access = require("@keystone-6/core/access");
 var import_fields = require("@keystone-6/core/fields");
 
 // auth/access.ts
-function isSignedIn({ session }) {
-  return Boolean(session);
+function isSignedIn({ session: session2 }) {
+  return Boolean(session2);
 }
 var permissions = {
-  canCreateItems: ({ session }) => session?.data.role?.canCreateItems ?? false,
-  canManageAllItems: ({ session }) => session?.data.role?.canManageAllItems ?? false,
-  canManageUsers: ({ session }) => session?.data.role?.canManageUsers ?? false,
-  canManageRoles: ({ session }) => session?.data.role?.canManageRoles ?? false
+  canCreateItems: ({ session: session2 }) => session2?.data.role?.canCreateItems ?? false,
+  canManageAllItems: ({ session: session2 }) => session2?.data.role?.canManageAllItems ?? false,
+  canManageUsers: ({ session: session2 }) => session2?.data.role?.canManageUsers ?? false,
+  canManageRoles: ({ session: session2 }) => session2?.data.role?.canManageRoles ?? false
 };
 var rules = {
-  canReadItems: ({ session }) => {
-    if (!session)
+  canReadItems: ({ session: session2 }) => {
+    if (!session2)
       return true;
-    if (session.data.role?.canManageAllItems) {
+    if (session2.data.role?.canManageAllItems) {
       return true;
     }
-    return { author: { id: { equals: session.itemId } } };
+    return { author: { id: { equals: session2.itemId } } };
   },
-  canManageItems: ({ session }) => {
-    if (!session)
+  canManageItems: ({ session: session2 }) => {
+    if (!session2)
       return false;
-    if (session.data.role?.canManageAllItems)
+    if (session2.data.role?.canManageAllItems)
       return true;
-    return { author: { id: { equals: session.itemId } } };
+    return { author: { id: { equals: session2.itemId } } };
   },
-  canReadUsers: ({ session }) => {
-    if (!session)
+  canReadUsers: ({ session: session2 }) => {
+    if (!session2)
       return false;
-    if (session.data.role?.canSeeOtherUsers)
+    if (session2.data.role?.canSeeOtherUsers)
       return true;
-    return { id: { equals: session.itemId } };
+    return { id: { equals: session2.itemId } };
   },
-  canUpdateUsers: ({ session }) => {
-    if (!session)
+  canUpdateUsers: ({ session: session2 }) => {
+    if (!session2)
       return false;
-    if (session.data.role?.canEditOtherUsers)
+    if (session2.data.role?.canEditOtherUsers)
       return true;
-    return { id: { equals: session.itemId } };
+    return { id: { equals: session2.itemId } };
   }
 };
 
@@ -194,10 +108,10 @@ var userSchema = (0, import_core.list)({
       initialColumns: ["name", "role"]
     },
     itemView: {
-      defaultFieldMode: ({ session, item }) => {
-        if (session?.data.role?.canEditOtherUsers)
+      defaultFieldMode: ({ session: session2, item }) => {
+        if (session2?.data.role?.canEditOtherUsers)
           return "edit";
-        if (session?.itemId === item.id)
+        if (session2?.itemId === item.id)
           return "edit";
         return "read";
       }
@@ -217,7 +131,7 @@ var userSchema = (0, import_core.list)({
       access: {
         read: import_access.denyAll,
         // Event: is this required?
-        update: ({ session, item }) => permissions.canManageUsers({ session }) || session?.itemId === item.id
+        update: ({ session: session2, item }) => permissions.canManageUsers({ session: session2 }) || session2?.itemId === item.id
       },
       validation: { isRequired: true }
     }),
@@ -571,33 +485,131 @@ var siteConfigSchema = (0, import_core6.list)({
 // schemas/orderSchema.ts
 var import_core7 = require("@keystone-6/core");
 var import_fields7 = require("@keystone-6/core/fields");
+var import_stripe = __toESM(require("stripe"));
 var import_access13 = require("@keystone-6/core/access");
+
+// utils/email.ts
+var import_nodemailer = __toESM(require("nodemailer"));
+var import_pug = __toESM(require("pug"));
+var import_html_to_text = require("html-to-text");
+var Email = class {
+  to;
+  name;
+  phoneNr;
+  contactEmail;
+  message;
+  from;
+  ip;
+  products;
+  amount;
+  id;
+  createdAt;
+  constructor(fromEmail, mailData) {
+    this.to = mailData.targetEmail;
+    this.name = mailData.name;
+    this.phoneNr = mailData.phoneNr;
+    this.contactEmail = mailData.contactEmail;
+    this.message = mailData.message;
+    this.from = fromEmail;
+    this.ip = mailData.ip;
+    this.products = mailData.orderDetails;
+    this.amount = mailData.amount;
+    this.id = mailData.orderId;
+    this.createdAt = mailData.createdAt;
+  }
+  newTransport() {
+    return import_nodemailer.default.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD
+      }
+    });
+  }
+  async send(template, subject) {
+    const html = import_pug.default.renderFile(`${__dirname}/../views/emails/${template}.pug`, {
+      name: this.name,
+      contactEmail: this.contactEmail,
+      message: this.message,
+      phoneNr: this.phoneNr,
+      ip: this.ip,
+      products: this.products,
+      amount: this.amount,
+      id: this.id,
+      createdAt: this.createdAt,
+      subject
+    });
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject,
+      html,
+      text: (0, import_html_to_text.htmlToText)(html)
+    };
+    await this.newTransport().sendMail(mailOptions);
+  }
+  async sendContactUs() {
+    await this.send("contact", "Meddelande fr\xE5n hemsidan!");
+  }
+  async sendOrderConfirmation() {
+    await this.send("order", "Orderbekr\xE4ftelse");
+  }
+};
+
+// schemas/orderSchema.ts
+var stripe = new import_stripe.default(process.env.STRIPE_WEBHOOK_SECRET);
 var orderSchema = (0, import_core7.list)({
   access: {
     operation: {
       ...(0, import_access13.allOperations)(isSignedIn),
-      create: permissions.canCreateItems,
+      create: () => true,
       query: () => true
     },
     filter: {
       query: () => true,
-      // query: rules.canReadItems,
       update: rules.canManageItems,
       delete: rules.canManageItems
     }
   },
+  hooks: {
+    resolveInput: async ({ operation, resolvedData, inputData }) => {
+      if (operation === "create") {
+        const session2 = await stripe.checkout.sessions.retrieve(inputData.paymentId);
+        if (session2.payment_status === "paid") {
+          return resolvedData;
+        } else {
+          throw new Error("Payment verification failed");
+        }
+      }
+    },
+    afterOperation: async ({ operation, item, resolvedData }) => {
+      if (operation === "create") {
+        const fromEmail = `${process.env.EMAIL_FROM}}`;
+        const { customerName, customerEmail, amount, orderDetails, createdAt } = resolvedData;
+        const { id } = item;
+        const mailData = {
+          targetEmail: customerEmail,
+          name: customerName,
+          amount,
+          orderDetails,
+          orderId: id.toString(),
+          createdAt,
+          phoneNr: "",
+          contactEmail: "",
+          message: "",
+          ip: ""
+        };
+        await new Email(fromEmail, mailData).sendOrderConfirmation();
+      }
+    }
+  },
   ui: {
-    labelField: "productTitle",
+    labelField: "customerName",
     listView: {
-      initialColumns: [
-        "id",
-        "customerName",
-        "customerEmail",
-        "createdAt",
-        "amount",
-        "status"
-      ],
-      initialSort: { field: "productTitle", direction: "ASC" },
+      initialColumns: ["customerName", "customerEmail", "createdAt", "amount", "status"],
+      initialSort: { field: "customerName", direction: "ASC" },
       pageSize: 50
     }
   },
@@ -611,8 +623,23 @@ var orderSchema = (0, import_core7.list)({
       validation: { isRequired: true }
     }),
     orderDetails: (0, import_fields7.json)({ label: "Produkter" }),
-    amount: (0, import_fields7.integer)({ label: "Summa", validation: { isRequired: true } }),
-    paymentId: (0, import_fields7.text)({ label: "Betalningsreferens" }),
+    amount: (0, import_fields7.integer)({
+      label: "Summa",
+      validation: { isRequired: true },
+      hooks: {
+        resolveInput: ({ operation, resolvedData, inputData }) => {
+          if (operation === "create") {
+            return resolvedData.amount / 100;
+          }
+        }
+      }
+    }),
+    paymentId: (0, import_fields7.text)({
+      label: "Betalningsreferens",
+      isIndexed: "unique",
+      validation: { isRequired: true }
+    }),
+    cardName: (0, import_fields7.text)({ label: "Kortinnehavare" }),
     createdAt: (0, import_fields7.timestamp)({
       defaultValue: { kind: "now" }
     }),
@@ -639,12 +666,37 @@ var lists = {
   Order: orderSchema
 };
 
-// keystone.ts
-var import_emailRoutes = __toESM(require_emailRoutes());
+// routes/emailRoutes.ts
+var sendEmail = async (req, res) => {
+  try {
+    const fromEmail = `${process.env.EMAIL_FROM}}`;
+    if (!req.body.name || !req.body.contactEmail || !req.body.phoneNr || !req.body.message) {
+      return res.status(400).send({
+        succuess: false,
+        message: "Missing or invalid required fields"
+      });
+    }
+    const mailData = {
+      targetEmail: fromEmail,
+      name: req.body.name,
+      contactEmail: req.body.contactEmail,
+      phoneNr: req.body.phoneNr,
+      message: req.body.message,
+      ip: req.connection.remoteAddress || ""
+      // Ensure that ip is always a string
+    };
+    await new Email(fromEmail, mailData).sendContactUs();
+    res.status(200).send({ success: true, message: "Email sent" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 // auth/auth.ts
 var import_auth = require("@keystone-6/auth");
 var import_session = require("@keystone-6/core/session");
+var sessionSecret = process.env.SESSION_SECRET;
+var sessionMaxAge = process.env.SESSION_MAX_AGE;
 var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   // Ett identity field på usern.
@@ -682,9 +734,137 @@ var { withAuth } = (0, import_auth.createAuth)({
       canUseAdminUI
     }`
 });
+var session = (0, import_session.statelessSessions)({
+  maxAge: Number(sessionMaxAge),
+  secret: sessionSecret
+});
+
+// keystone.ts
+var import_stripe4 = __toESM(require("stripe"));
+
+// routes/checkoutSession.ts
+var import_stripe2 = __toESM(require("stripe"));
+var stripe2 = new import_stripe2.default(process.env.STRIPE_WEBHOOK_SECRET);
+var checkoutSession = async (req, res, commonContext) => {
+  try {
+    const { products, customerData } = req.body;
+    const productQueries = products.map(
+      (product) => commonContext.query.Product.findOne({
+        where: { id: product.id },
+        query: "id productTitle, price, productImage { url }"
+      }).then((validProduct) => ({
+        ...validProduct,
+        quantity: product.quantity,
+        ...customerData
+      }))
+    );
+    const validProducts = await Promise.all(productQueries);
+    const stripeOrderData = validProducts.map((product, i) => {
+      return {
+        price_data: {
+          currency: "sek",
+          unit_amount: product.price * 100,
+          product_data: {
+            name: `${product.productTitle}`,
+            description: product.desc,
+            images: [product.productImage.url]
+          }
+        },
+        quantity: product.quantity
+      };
+    });
+    const session2 = await stripe2.checkout.sessions.create({
+      line_items: stripeOrderData,
+      customer_email: customerData.customerEmail,
+      metadata: {
+        customerName: customerData.customerName
+      },
+      mode: "payment",
+      success_url: `${process.env.CORS_FRONTEND_ORIGIN}/status?order={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.CORS_FRONTEND_ORIGIN}/error`
+    });
+    res.status(200).json({
+      status: "success",
+      session: session2
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// routes/webhookCheckout.ts
+var import_stripe3 = __toESM(require("stripe"));
+var stripe3 = new import_stripe3.default(process.env.STRIPE_WEBHOOK_SECRET);
+var webhookCheckout = async (req, res, commonContext) => {
+  const signature = req.headers["stripe-signature"];
+  let event;
+  try {
+    event = stripe3.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SIGN_SECRET
+    );
+  } catch (err) {
+    return res.sendStatus(400).end();
+  }
+  if (event.type === "checkout.session.completed") {
+    const session2 = event.data.object;
+    const { line_items } = await stripe3.checkout.sessions.retrieve(session2.id, {
+      expand: ["line_items"]
+    });
+    const { metadata } = event.data.object;
+    const customerName = metadata ? metadata.customerName : null;
+    const cardName = event.data.object.customer_details ? event.data.object.customer_details.name : null;
+    if (!customerName || !cardName || !line_items || !line_items.data.length || !event.data.object.customer_email || !event.data.object.amount_total || !event.data.object.payment_intent || !event.data.object.payment_intent) {
+      throw new Error("Customer name or card name is missing");
+    }
+    const orderDetails = {
+      customerName,
+      customerEmail: event.data.object.customer_email,
+      line_items: line_items.data,
+      amount: event.data.object.amount_total,
+      paymentId: event.data.object.id,
+      cardName
+    };
+    await createOrderCheckout(orderDetails, commonContext);
+  }
+  res.status(200).end();
+};
+var createOrderCheckout = async (orderDetails, commonContext) => {
+  const orderData = {
+    customerName: orderDetails.customerName,
+    paymentId: orderDetails.paymentId,
+    orderDetails: orderDetails.line_items,
+    amount: orderDetails.amount,
+    customerEmail: orderDetails.customerEmail,
+    cardName: orderDetails.cardName,
+    status: "confirmed"
+  };
+  await commonContext.query.Order.createOne({
+    data: {
+      ...orderData,
+      paymentId: orderData.paymentId.toString()
+    },
+    query: `
+      id
+      amount
+      customerEmail
+      customerName
+      orderDetails
+      cardName
+      paymentId
+      status
+    `
+  });
+};
 
 // keystone.ts
 import_dotenv.default.config();
+var stripe4 = new import_stripe4.default(process.env.STRIPE_WEBHOOK_SECRET);
 var {
   PORT,
   BASE_URL,
@@ -710,9 +890,19 @@ var keystone_default = withAuth(
       port: Number(PORT),
       cors: { origin: [CORS_FRONTEND_ORIGIN], credentials: true },
       extendExpressApp: (app, commonContext) => {
+        app.post(
+          "/webhook-checkout",
+          import_express.default.raw({ type: "application/json" }),
+          async (req, res) => {
+            await webhookCheckout(req, res, commonContext);
+          }
+        );
         app.use(import_express.default.json());
+        app.post("/api/checkout-session", async (req, res) => {
+          await checkoutSession(req, res, commonContext);
+        });
         app.use("/public", import_express.default.static("public"));
-        app.post("/api/email", import_emailRoutes.default);
+        app.post("/api/email", sendEmail);
       }
     },
     lists,
@@ -727,8 +917,8 @@ var keystone_default = withAuth(
       }
     },
     ui: {
-      isAccessAllowed: ({ session }) => {
-        return session?.data.role?.canUseAdminUI ?? false;
+      isAccessAllowed: ({ session: session2 }) => {
+        return session2?.data.role?.canUseAdminUI ?? false;
       }
     },
     session: (0, import_session2.statelessSessions)()
