@@ -19,6 +19,7 @@ export const webhookCheckout = async (
   commonContext: Context
 ) => {
   const signature = req.headers['stripe-signature'];
+  console.log('webhook checkout');
 
   let event;
   try {
@@ -66,6 +67,7 @@ export const webhookCheckout = async (
       paymentId: event.data.object.id,
       cardName: cardName,
     };
+
     await createOrderCheckout(orderDetails, commonContext);
   }
 

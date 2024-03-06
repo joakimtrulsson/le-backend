@@ -24,6 +24,7 @@ export const orderSchema = list({
   hooks: {
     resolveInput: async ({ operation, resolvedData, inputData }) => {
       if (operation === 'create') {
+        console.log('skapa order');
         const session = await stripe.checkout.sessions.retrieve(inputData.paymentId);
 
         if (session.payment_status === 'paid') {

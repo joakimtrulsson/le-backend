@@ -576,6 +576,7 @@ var orderSchema = (0, import_core7.list)({
   hooks: {
     resolveInput: async ({ operation, resolvedData, inputData }) => {
       if (operation === "create") {
+        console.log("skapa order");
         const session2 = await stripe.checkout.sessions.retrieve(inputData.paymentId);
         if (session2.payment_status === "paid") {
           return resolvedData;
@@ -748,6 +749,7 @@ var stripe2 = new import_stripe2.default(process.env.STRIPE_WEBHOOK_SECRET);
 var checkoutSession = async (req, res, commonContext) => {
   try {
     const { products, customerData } = req.body;
+    console.log("skapa checkout-session");
     const productQueries = products.map(
       (product) => commonContext.query.Product.findOne({
         where: { id: product.id },
@@ -801,6 +803,7 @@ var import_stripe3 = __toESM(require("stripe"));
 var stripe3 = new import_stripe3.default(process.env.STRIPE_WEBHOOK_SECRET);
 var webhookCheckout = async (req, res, commonContext) => {
   const signature = req.headers["stripe-signature"];
+  console.log("webhook checkout");
   let event;
   try {
     event = stripe3.webhooks.constructEvent(
