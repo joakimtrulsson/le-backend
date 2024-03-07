@@ -586,23 +586,28 @@ var orderSchema = (0, import_core7.list)({
       }
     },
     afterOperation: async ({ operation, item, resolvedData }) => {
-      if (operation === "create") {
-        const fromEmail = `${process.env.EMAIL_FROM}}`;
-        const { customerName, customerEmail, amount, orderDetails, createdAt } = resolvedData;
-        const { id } = item;
-        const mailData = {
-          targetEmail: customerEmail,
-          name: customerName,
-          amount,
-          orderDetails,
-          orderId: id.toString(),
-          createdAt,
-          phoneNr: "",
-          contactEmail: "",
-          message: "",
-          ip: ""
-        };
-        await new Email(fromEmail, mailData).sendOrderConfirmation();
+      console.log("skicka mail");
+      try {
+        if (operation === "create") {
+          const fromEmail = `${process.env.EMAIL_FROM}}`;
+          const { customerName, customerEmail, amount, orderDetails, createdAt } = resolvedData;
+          const { id } = item;
+          const mailData = {
+            targetEmail: customerEmail,
+            name: customerName,
+            amount,
+            orderDetails,
+            orderId: id.toString(),
+            createdAt,
+            phoneNr: "",
+            contactEmail: "",
+            message: "",
+            ip: ""
+          };
+          await new Email(fromEmail, mailData).sendOrderConfirmation();
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
   },
@@ -749,7 +754,6 @@ var stripe2 = new import_stripe2.default(process.env.STRIPE_WEBHOOK_SECRET);
 var checkoutSession = async (req, res, commonContext) => {
   try {
     const { products, customerData } = req.body;
-    console.log("skapa checkout-session");
     const productQueries = products.map(
       (product) => commonContext.query.Product.findOne({
         where: { id: product.id },
@@ -803,7 +807,6 @@ var import_stripe3 = __toESM(require("stripe"));
 var stripe3 = new import_stripe3.default(process.env.STRIPE_WEBHOOK_SECRET);
 var webhookCheckout = async (req, res, commonContext) => {
   const signature = req.headers["stripe-signature"];
-  console.log("webhook checkout");
   let event;
   try {
     event = stripe3.webhooks.constructEvent(
