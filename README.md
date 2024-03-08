@@ -1,4 +1,4 @@
-# D4CR Keystone Server Installations Guide
+# Keystone Server Installations Guide
 
 ## Konfigurera miljövariabler
 
