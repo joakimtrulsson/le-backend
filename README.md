@@ -1,4 +1,4 @@
-# D4CR Keystone Server Installations Guide
+# Keystone Server Installations Guide
 
 ## Konfigurera miljövariabler
 
@@ -62,7 +62,7 @@ STRIPE_WEBOOKH_SIGN_SECRET=
 - Använd följande kommando för att installera och starta din Keystone JS-server:
 
 ```
-cd /backend
+
 npm install
 npm run dev
 
