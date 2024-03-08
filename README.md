@@ -1,52 +1,69 @@
-# Keystone Project Starter
+# D4CR Keystone Server Installations Guide
 
-Welcome to Keystone!
+## Konfigurera miljövariabler
 
-Run
+- Skapa en .env-fil med nedanstående variabler och ange dina egna värden.
 
 ```
-yarn dev
+PORT=3000
+BASE_URL = 'http://localhost:${PORT}/'
+NEXT_API_URL = '${BASE_URL}api/graphql'
+CORS_FRONTEND_ORIGIN=
+
+# Session
+SESSION_SECRET="myultrasecretstringmyultrasecretstring"
+SESSION_MAX_AGE=2592000
+
+# Database
+HEROKU_POSTGRESQL_BROWN_URL=
+
+# Storage
+BUCKETEER_BUCKET_NAME=
+BUCKETEER_AWS_REGION=
+BUCKETEER_AWS_ACCESS_KEY_ID=
+BUCKETEER_AWS_SECRET_ACCESS_KEY=
+
+# Media
+MEDIA_URL="${BASE_URL}public/media"
+IMAGE_URL="${BASE_URL}public/images"
+
+# Mail
+## Development (Mailtrap)
+EMAIL_USERNAME=yourusername
+EMAIL_PASSWORD=yourpassword
+EMAIL_HOST=sandbox.smtp.mailtrap.io
+EMAIL_PORT=465
+
+EMAIL_FROM="your@email.com"
+
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_WEBOOKH_SIGN_SECRET=
+
 ```
 
-To view the config for your new app, look at [./keystone.ts](./keystone.ts)
+## Mailtrap
 
-This project starter is designed to give you a sense of the power Keystone can offer you, and show off some of its main features. It's also a pretty simple setup if you want to build out from it.
+- Gå till Mailtrap och skapa ett konto om du inte redan har ett.
+- Efter att du har loggat in, skapa en ny inkorg genom att klicka på "Add Inbox" (Lägg till inkorg) och följ instruktionerna för att konfigurera den.
+- När inkorgen är skapad, klicka på den för att få tillgång till dess inställningar.
+- I inställningarna kommer du att hitta SMTP-serverinformation som du behöver för att fylla i din .env-fil. Notera användarnamn, lösenord, host och port.
+- Återgå till din .env-fil och fyll i dina uppgifter under "# Mail":
 
-We recommend you use this alongside our [getting started walkthrough](https://keystonejs.com/docs/walkthroughs/getting-started-with-create-keystone-app) which will walk you through what you get as part of this starter.
+## Skapa en Postgres databas lokalt
 
-If you want an overview of all the features Keystone offers, check out our [features](https://keystonejs.com/why-keystone#features) page.
+- Följ dessa steg för att skapa en Postgres-databas lokalt:
+- Installera Postgres via [Download Postgres](https://postgresapp.com/downloads.html) om du inte redan har det.
+- Skapa en ny databas via GUI.
+- Uppdatera HEROKU_POSTGRESQL_BROWN_URL i .env.
 
-## Some Quick Notes On Getting Started
+## Start Keystone Js
 
-### Changing the database
+- Använd följande kommando för att installera och starta din Keystone JS-server:
 
-We've set you up with an [SQLite database](https://keystonejs.com/docs/apis/config#sqlite) for ease-of-use. If you're wanting to use PostgreSQL, you can!
-
-Just change the `db` property on line 16 of the Keystone file [./keystone.ts](./keystone.ts) to
-
-```typescript
-db: {
-    provider: 'postgresql',
-    url: process.env.DATABASE_URL || 'DATABASE_URL_TO_REPLACE',
-}
 ```
+cd /backend
+npm install
+npm run dev
 
-And provide your database url from PostgreSQL.
-
-For more on database configuration, check out or [DB API Docs](https://keystonejs.com/docs/apis/config#db)
-
-### Auth
-
-We've put auth into its own file to make this humble starter easier to navigate. To explore it without auth turned on, comment out the `isAccessAllowed` on line 21 of the Keystone file [./keystone.ts](./keystone.ts).
-
-For more on auth, check out our [Authentication API Docs](https://keystonejs.com/docs/apis/auth#authentication-api)
-
-### Adding a frontend
-
-As a Headless CMS, Keystone can be used with any frontend that uses GraphQL. It provides a GraphQL endpoint you can write queries against at `/api/graphql` (by default [http://localhost:3000/api/graphql](http://localhost:3000/api/graphql)). At Thinkmill, we tend to use [Next.js](https://nextjs.org/) and [Apollo GraphQL](https://www.apollographql.com/docs/react/get-started/) as our frontend and way to write queries, but if you have your own favourite, feel free to use it.
-
-A walkthrough on how to do this is forthcoming, but in the meantime our [todo example](https://github.com/keystonejs/keystone-react-todo-demo) shows a Keystone set up with a frontend. For a more full example, you can also look at an example app we built for [Prisma Day 2021](https://github.com/keystonejs/prisma-day-2021-workshop)
-
-### Embedding Keystone in a Next.js frontend
-
-While Keystone works as a standalone app, you can embed your Keystone app into a [Next.js](https://nextjs.org/) app. This is quite a different setup to the starter, and we recommend checking out our walkthrough for that [here](https://keystonejs.com/docs/walkthroughs/embedded-mode-with-sqlite-nextjs#how-to-embed-keystone-sq-lite-in-a-next-js-app).
+```
