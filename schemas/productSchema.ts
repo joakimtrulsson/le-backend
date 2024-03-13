@@ -65,6 +65,21 @@ export const productSchema = list({
       },
     }),
 
+    recommendedProduct: select({
+      label: 'Rekommenderad produkt?',
+      options: [
+        { label: 'Ja', value: 'yes' },
+        { label: 'Nej', value: 'no' },
+      ],
+      validation: { isRequired: true },
+      defaultValue: 'no',
+      ui: {
+        description:
+          'Om Yes, så visas produkten som rekommenderad produkt i Erbjudande-sektionen.',
+        displayMode: 'segmented-control',
+      },
+    }),
+
     status: select({
       options: [
         { label: 'Publicerad', value: 'published' },

@@ -252,7 +252,7 @@ var productSchema = (0, import_core3.list)({
     discountPrice: (0, import_fields3.integer)({
       label: "Rabattpris",
       ui: {
-        description: "Om discount pris \xE4r satt, produkten visas i Erbjudande-sektionen."
+        description: "Om discount pris \xE4r satt, s\xE5 visas priset i r\xF6tt."
       }
     }),
     recommendedProduct: (0, import_fields3.select)({
