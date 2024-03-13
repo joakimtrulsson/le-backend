@@ -744,7 +744,7 @@ var checkoutSession = async (req, res, commonContext) => {
     const productQueries = products.map(
       (product) => commonContext.query.Product.findOne({
         where: { id: product.id },
-        query: "id productTitle, price, productImage { url }"
+        query: "id productTitle, price, discountPrice, productImage { url }"
       }).then((validProduct) => ({
         ...validProduct,
         quantity: product.quantity,
@@ -756,7 +756,7 @@ var checkoutSession = async (req, res, commonContext) => {
       return {
         price_data: {
           currency: "sek",
-          unit_amount: product.price * 100,
+          unit_amount: (product.discountPrice || product.price) * 100,
           product_data: {
             name: `${product.productTitle}`,
             description: product.desc,
