@@ -255,19 +255,6 @@ var productSchema = (0, import_core3.list)({
         description: "Om discount pris \xE4r satt, s\xE5 visas priset i r\xF6tt."
       }
     }),
-    recommendedProduct: (0, import_fields3.select)({
-      label: "Rekommenderad produkt?",
-      options: [
-        { label: "Ja", value: "yes" },
-        { label: "Nej", value: "no" }
-      ],
-      validation: { isRequired: true },
-      defaultValue: "no",
-      ui: {
-        description: "Om Yes, s\xE5 visas produkten som rekommenderad produkt i Erbjudande-sektionen.",
-        displayMode: "segmented-control"
-      }
-    }),
     status: (0, import_fields3.select)({
       options: [
         { label: "Publicerad", value: "published" },
