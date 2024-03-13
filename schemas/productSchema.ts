@@ -61,22 +61,7 @@ export const productSchema = list({
     discountPrice: integer({
       label: 'Rabattpris',
       ui: {
-        description: 'Om discount pris är satt, produkten visas i Erbjudande-sektionen.',
-      },
-    }),
-
-    recommendedProduct: select({
-      label: 'Rekommenderad produkt?',
-      options: [
-        { label: 'Ja', value: 'yes' },
-        { label: 'Nej', value: 'no' },
-      ],
-      validation: { isRequired: true },
-      defaultValue: 'no',
-      ui: {
-        description:
-          'Om Yes, så visas produkten som rekommenderad produkt i Erbjudande-sektionen.',
-        displayMode: 'segmented-control',
+        description: 'Om discount pris är satt, så visas priset i rött.',
       },
     }),
 
