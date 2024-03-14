@@ -451,8 +451,8 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    offersPreamble: (0, import_fields_document.document)({
-      label: "V\xE5ra erbjudande f\xF6rord",
+    ourLocationPreamble: (0, import_fields_document.document)({
+      label: '"Var finns vi?" f\xF6rord',
       formatting: {
         inlineMarks: {
           bold: true,

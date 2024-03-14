@@ -102,7 +102,7 @@ model SiteConfig {
   productsPreamble     Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   reviewsPreamble      Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   ourServicesPreamble  Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  offersPreamble       Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  ourLocationPreamble  Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 }
 
 model Order {
