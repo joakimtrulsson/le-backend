@@ -2,15 +2,6 @@ import type { Request, Response } from 'express';
 
 import { Email } from '../utils/email';
 
-interface MailData {
-  targetEmail: string;
-  name: string;
-  phoneNr: string;
-  contactEmail: string;
-  message: string;
-  ip: string;
-}
-
 export const sendEmail = async (req: Request, res: Response) => {
   try {
     const fromEmail = `${process.env.EMAIL_FROM}}`;
@@ -27,13 +18,13 @@ export const sendEmail = async (req: Request, res: Response) => {
       });
     }
 
-    const mailData: MailData = {
+    const mailData = {
       targetEmail: fromEmail,
       name: req.body.name,
       contactEmail: req.body.contactEmail,
       phoneNr: req.body.phoneNr,
       message: req.body.message,
-      ip: req.connection.remoteAddress || '', // Ensure that ip is always a string
+      ip: req.connection.remoteAddress || '',
     };
     await new Email(fromEmail, mailData).sendContactUs();
 
