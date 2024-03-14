@@ -9,8 +9,6 @@ export const verifyToken = async (req: Request, res: Response) => {
       { method: 'POST' }
     );
     const data = await response.json();
-    console.log(data);
-    console.log(SITE_SECRET);
 
     res.status(200).send(data);
   } catch (error) {
