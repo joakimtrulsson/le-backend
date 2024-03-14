@@ -9,10 +9,10 @@ interface MailData {
   contactEmail: string;
   message: string;
   ip: string;
-  orderDetails: any;
-  amount: number;
-  orderId: string;
-  createdAt: string;
+  orderDetails?: any;
+  amount?: number;
+  orderId?: string;
+  createdAt?: string;
 }
 
 interface MailOptions {
@@ -45,10 +45,9 @@ export class Email {
     this.from = fromEmail;
     this.ip = mailData.ip;
     this.products = mailData.orderDetails;
-    this.amount = mailData.amount;
-    this.id = mailData.orderId;
-    this.createdAt = mailData.createdAt;
-    // this.from = `${process.env.EMAIL_FROM}}`;
+    this.amount = mailData.amount || 0;
+    this.id = mailData.orderId ?? '';
+    this.createdAt = mailData.createdAt ?? '';
   }
 
   newTransport() {

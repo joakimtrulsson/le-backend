@@ -111,8 +111,8 @@ export const siteConfigSchema = list({
       },
     }),
 
-    offersPreamble: document({
-      label: 'Våra erbjudande förord',
+    ourLocationPreamble: document({
+      label: '"Var finns vi?" förord',
       formatting: {
         inlineMarks: {
           bold: true,

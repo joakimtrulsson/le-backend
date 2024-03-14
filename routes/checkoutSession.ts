@@ -15,7 +15,7 @@ export const checkoutSession = async (
     const productQueries = products.map((product: { id: string; quantity: number }) =>
       commonContext.query.Product.findOne({
         where: { id: product.id },
-        query: 'id productTitle, price, productImage { url }',
+        query: 'id productTitle, price, discountPrice, productImage { url }',
       }).then((validProduct) => ({
         ...validProduct,
         quantity: product.quantity,
@@ -29,7 +29,7 @@ export const checkoutSession = async (
       return {
         price_data: {
           currency: 'sek',
-          unit_amount: product.price * 100,
+          unit_amount: (product.discountPrice || product.price) * 100,
           product_data: {
             name: `${product.productTitle}`,
             description: product.desc,

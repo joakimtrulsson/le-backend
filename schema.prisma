@@ -48,7 +48,6 @@ model Product {
   price                  Int
   priceUnit              String  @default("kr")
   discountPrice          Int?
-  recommendedProduct     String  @default("no")
   status                 String  @default("draft")
 }
 
@@ -103,7 +102,7 @@ model SiteConfig {
   productsPreamble     Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   reviewsPreamble      Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   ourServicesPreamble  Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  offersPreamble       Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  ourLocationPreamble  Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 }
 
 model Order {

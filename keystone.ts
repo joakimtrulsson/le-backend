@@ -5,12 +5,13 @@ import dotenv from 'dotenv';
 import express from 'express';
 
 import { lists } from './schema';
-import { sendEmail } from './routes/emailRoutes';
+import { sendEmail } from './routes/sendEmail';
 import { withAuth } from './auth/auth';
 
 import Stripe from 'stripe';
 import { checkoutSession } from './routes/checkoutSession';
 import { webhookCheckout } from './routes/webhookCheckout';
+import { verifyToken } from './routes/verifyToken';
 
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_WEBHOOK_SECRET as string);
@@ -59,6 +60,7 @@ export default withAuth(
 
         app.use('/public', express.static('public'));
         app.post('/api/email', sendEmail);
+        app.post('/api/verify-token', verifyToken);
       },
     },
     lists,

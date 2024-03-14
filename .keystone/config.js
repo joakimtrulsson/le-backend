@@ -252,20 +252,7 @@ var productSchema = (0, import_core3.list)({
     discountPrice: (0, import_fields3.integer)({
       label: "Rabattpris",
       ui: {
-        description: "Om discount pris \xE4r satt, produkten visas i Erbjudande-sektionen."
-      }
-    }),
-    recommendedProduct: (0, import_fields3.select)({
-      label: "Rekommenderad produkt?",
-      options: [
-        { label: "Ja", value: "yes" },
-        { label: "Nej", value: "no" }
-      ],
-      validation: { isRequired: true },
-      defaultValue: "no",
-      ui: {
-        description: "Om Yes, s\xE5 visas produkten som rekommenderad produkt i Erbjudande-sektionen.",
-        displayMode: "segmented-control"
+        description: "Om discount pris \xE4r satt, s\xE5 visas priset i r\xF6tt."
       }
     }),
     status: (0, import_fields3.select)({
@@ -464,8 +451,8 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    offersPreamble: (0, import_fields_document.document)({
-      label: "V\xE5ra erbjudande f\xF6rord",
+    ourLocationPreamble: (0, import_fields_document.document)({
+      label: '"Var finns vi?" f\xF6rord',
       formatting: {
         inlineMarks: {
           bold: true,
@@ -513,9 +500,9 @@ var Email = class {
     this.from = fromEmail;
     this.ip = mailData.ip;
     this.products = mailData.orderDetails;
-    this.amount = mailData.amount;
-    this.id = mailData.orderId;
-    this.createdAt = mailData.createdAt;
+    this.amount = mailData.amount || 0;
+    this.id = mailData.orderId ?? "";
+    this.createdAt = mailData.createdAt ?? "";
   }
   newTransport() {
     return import_nodemailer.default.createTransport({
@@ -672,7 +659,7 @@ var lists = {
   Order: orderSchema
 };
 
-// routes/emailRoutes.ts
+// routes/sendEmail.ts
 var sendEmail = async (req, res) => {
   try {
     const fromEmail = `${process.env.EMAIL_FROM}}`;
@@ -689,7 +676,6 @@ var sendEmail = async (req, res) => {
       phoneNr: req.body.phoneNr,
       message: req.body.message,
       ip: req.connection.remoteAddress || ""
-      // Ensure that ip is always a string
     };
     await new Email(fromEmail, mailData).sendContactUs();
     res.status(200).send({ success: true, message: "Email sent" });
@@ -757,7 +743,7 @@ var checkoutSession = async (req, res, commonContext) => {
     const productQueries = products.map(
       (product) => commonContext.query.Product.findOne({
         where: { id: product.id },
-        query: "id productTitle, price, productImage { url }"
+        query: "id productTitle, price, discountPrice, productImage { url }"
       }).then((validProduct) => ({
         ...validProduct,
         quantity: product.quantity,
@@ -769,7 +755,7 @@ var checkoutSession = async (req, res, commonContext) => {
       return {
         price_data: {
           currency: "sek",
-          unit_amount: product.price * 100,
+          unit_amount: (product.discountPrice || product.price) * 100,
           product_data: {
             name: `${product.productTitle}`,
             description: product.desc,
@@ -868,6 +854,22 @@ var createOrderCheckout = async (orderDetails, commonContext) => {
   });
 };
 
+// routes/verifyToken.ts
+var verifyToken = async (req, res) => {
+  try {
+    const { captchaValue } = req.body;
+    const SITE_SECRET = process.env.RECAPTCHA_SITE_SECRET;
+    const response = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${SITE_SECRET}&response=${captchaValue}`,
+      { method: "POST" }
+    );
+    const data = await response.json();
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // keystone.ts
 import_dotenv.default.config();
 var stripe4 = new import_stripe4.default(process.env.STRIPE_WEBHOOK_SECRET);
@@ -909,6 +911,7 @@ var keystone_default = withAuth(
         });
         app.use("/public", import_express.default.static("public"));
         app.post("/api/email", sendEmail);
+        app.post("/api/verify-token", verifyToken);
       }
     },
     lists,

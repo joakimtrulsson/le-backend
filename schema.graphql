@@ -222,7 +222,6 @@ type Product {
   price: Int
   priceUnit: String
   discountPrice: Int
-  recommendedProduct: String
   status: String
 }
 
@@ -257,7 +256,6 @@ input ProductWhereInput {
   price: IntFilter
   priceUnit: StringFilter
   discountPrice: IntNullableFilter
-  recommendedProduct: StringFilter
   status: StringFilter
 }
 
@@ -290,7 +288,6 @@ input ProductOrderByInput {
   price: OrderDirection
   priceUnit: OrderDirection
   discountPrice: OrderDirection
-  recommendedProduct: OrderDirection
   status: OrderDirection
 }
 
@@ -301,7 +298,6 @@ input ProductUpdateInput {
   price: Int
   priceUnit: String
   discountPrice: Int
-  recommendedProduct: String
   status: String
 }
 
@@ -324,7 +320,6 @@ input ProductCreateInput {
   price: Int
   priceUnit: String
   discountPrice: Int
-  recommendedProduct: String
   status: String
 }
 
@@ -464,7 +459,7 @@ type SiteConfig {
   productsPreamble: SiteConfig_productsPreamble_Document
   reviewsPreamble: SiteConfig_reviewsPreamble_Document
   ourServicesPreamble: SiteConfig_ourServicesPreamble_Document
-  offersPreamble: SiteConfig_offersPreamble_Document
+  ourLocationPreamble: SiteConfig_ourLocationPreamble_Document
 }
 
 type SiteConfig_heroPreamble_Document {
@@ -487,7 +482,7 @@ type SiteConfig_ourServicesPreamble_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
-type SiteConfig_offersPreamble_Document {
+type SiteConfig_ourLocationPreamble_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
@@ -519,7 +514,7 @@ input SiteConfigUpdateInput {
   productsPreamble: JSON
   reviewsPreamble: JSON
   ourServicesPreamble: JSON
-  offersPreamble: JSON
+  ourLocationPreamble: JSON
 }
 
 input SiteConfigUpdateArgs {
@@ -538,7 +533,7 @@ input SiteConfigCreateInput {
   productsPreamble: JSON
   reviewsPreamble: JSON
   ourServicesPreamble: JSON
-  offersPreamble: JSON
+  ourLocationPreamble: JSON
 }
 
 type Order {
