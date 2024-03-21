@@ -1,10 +1,15 @@
 import { list } from '@keystone-6/core';
 import { allOperations, denyAll } from '@keystone-6/core/access';
 import { password, relationship, text } from '@keystone-6/core/fields';
+import { type Lists } from '.keystone/types';
 
 import { isSignedIn, permissions, rules } from '../auth/access';
 
-export const userSchema = list({
+export type Session = {
+  itemId: string;
+};
+
+export const userSchema: Lists.User = list({
   access: {
     operation: {
       ...allOperations(isSignedIn),
@@ -18,8 +23,6 @@ export const userSchema = list({
   },
   ui: {
     isHidden: (args) => {
-      // Replace this with your own logic
-      // For example, you might check if the user has a certain role
       return !permissions?.canManageRoles(args);
     },
     hideCreate: (args) => !permissions.canManageUsers(args),
@@ -51,7 +54,7 @@ export const userSchema = list({
     }),
     password: password({
       access: {
-        read: denyAll, // Event: is this required?
+        read: denyAll,
         update: ({ session, item }) =>
           permissions.canManageUsers({ session }) || session?.itemId === item.id,
       },

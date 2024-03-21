@@ -1,24 +1,21 @@
 import { config } from '@keystone-6/core';
-import { statelessSessions } from '@keystone-6/core/session';
 import type { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import express from 'express';
 
 import { lists } from './schema';
 import { sendEmail } from './routes/sendEmail';
-import { withAuth } from './auth/auth';
-
-import Stripe from 'stripe';
+import { withAuth, session } from './auth/auth';
 import { checkoutSession } from './routes/checkoutSession';
 import { webhookCheckout } from './routes/webhookCheckout';
 import { verifyToken } from './routes/verifyToken';
+import { type TypeInfo } from '.keystone/types';
+import { type Session } from './auth/access';
 
 dotenv.config();
-const stripe = new Stripe(process.env.STRIPE_WEBHOOK_SECRET as string);
 
 const {
   PORT,
-  BASE_URL,
   HEROKU_POSTGRESQL_BROWN_URL,
   CORS_FRONTEND_ORIGIN,
   BUCKETEER_BUCKET_NAME: bucketName,
@@ -27,8 +24,8 @@ const {
   BUCKETEER_AWS_SECRET_ACCESS_KEY: secretAccessKey,
 } = process.env;
 
-export default withAuth(
-  config({
+export default withAuth<TypeInfo<Session>>(
+  config<TypeInfo>({
     db: {
       provider: 'postgresql',
       url: HEROKU_POSTGRESQL_BROWN_URL as string,
@@ -80,6 +77,6 @@ export default withAuth(
         return session?.data.role?.canUseAdminUI ?? false;
       },
     },
-    session: statelessSessions(),
+    session,
   })
 );

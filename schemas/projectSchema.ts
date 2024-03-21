@@ -1,10 +1,10 @@
 import { list } from '@keystone-6/core';
 import { text, image, json, calendarDay } from '@keystone-6/core/fields';
-
+import { type Lists } from '.keystone/types';
 import { allOperations } from '@keystone-6/core/access';
 import { isSignedIn, permissions, rules } from '../auth/access';
 
-export const projectSchema = list({
+export const projectSchema: Lists.Project = list({
   access: {
     operation: {
       ...allOperations(isSignedIn),
@@ -12,9 +12,8 @@ export const projectSchema = list({
       query: () => true,
     },
     filter: {
-      query: () => true,
-      // query: rules.canReadItems,
-      update: rules.canManageItems,
+      query: rules.canReadItems,
+      update: () => true, // Replace 'rules.canManageItems' with a valid filter condition
       delete: rules.canManageItems,
     },
   },
