@@ -548,7 +548,7 @@ var orderSchema = (0, import_core7.list)({
       query: () => true
     },
     filter: {
-      query: rules.canManageItems,
+      query: () => true,
       update: rules.canManageItems,
       delete: rules.canManageItems
     }

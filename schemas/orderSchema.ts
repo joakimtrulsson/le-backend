@@ -16,7 +16,7 @@ export const orderSchema: Lists.Order = list({
       query: () => true,
     },
     filter: {
-      query: rules.canManageItems,
+      query: () => true,
       update: rules.canManageItems,
       delete: rules.canManageItems,
     },
