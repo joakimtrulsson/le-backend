@@ -45,31 +45,26 @@ export const rules = {
     if (session.data.role?.canManageAllItems) {
       return true;
     }
-
-    // Gör så en användare bara kan se sina egna items.
-    return { author: { id: { equals: session.itemId } } };
+    return false;
   },
   canManageItems: ({ session }: AccessArgs) => {
     if (!session) return false;
 
-    // Om användare har canMangaAllItems
     if (session.data.role?.canManageAllItems) return true;
-
-    // Annars så kan man bara redigera sina egna.
-    return { author: { id: { equals: session.itemId } } };
+    return false;
   },
   canReadUsers: ({ session }: AccessArgs) => {
     if (!session) return false;
 
     if (session.data.role?.canSeeOtherUsers) return true;
 
-    return { id: { equals: session.itemId } };
+    return false;
   },
   canUpdateUsers: ({ session }: AccessArgs) => {
     if (!session) return false;
 
     if (session.data.role?.canEditOtherUsers) return true;
 
-    return { id: { equals: session.itemId } };
+    return false;
   },
 };

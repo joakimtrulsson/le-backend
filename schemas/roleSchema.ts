@@ -1,10 +1,10 @@
 import { list } from '@keystone-6/core';
 import { allOperations } from '@keystone-6/core/access';
 import { checkbox, relationship, text } from '@keystone-6/core/fields';
-
+import { type Lists } from '.keystone/types';
 import { isSignedIn, permissions } from '../auth/access';
 
-export const roleSchema = list({
+export const roleSchema: Lists.Role = list({
   access: {
     operation: {
       ...allOperations(permissions.canManageRoles),
@@ -13,14 +13,12 @@ export const roleSchema = list({
   },
   ui: {
     isHidden: (args) => {
-      // Replace this with your own logic
-      // For example, you might check if the user has a certain role
       return !permissions?.canManageRoles(args);
     },
     hideCreate: (args) => !permissions.canManageRoles(args),
     hideDelete: (args) => !permissions.canManageRoles(args),
     listView: {
-      initialColumns: ['name', 'author'],
+      initialColumns: ['name'],
     },
     itemView: {
       defaultFieldMode: (args) => (permissions.canManageRoles(args) ? 'edit' : 'read'),
@@ -42,10 +40,6 @@ export const roleSchema = list({
     canManageRoles: checkbox({ defaultValue: false }),
 
     canUseAdminUI: checkbox({ defaultValue: false }),
-
-    canReadChapters: checkbox({ defaultValue: false }),
-
-    canReadImages: checkbox({ defaultValue: false }),
 
     users: relationship({
       ref: 'User.role',

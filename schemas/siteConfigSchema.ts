@@ -1,11 +1,11 @@
 import { list } from '@keystone-6/core';
-import { text, integer, image, select } from '@keystone-6/core/fields';
+import { text, image } from '@keystone-6/core/fields';
 import { document } from '@keystone-6/fields-document';
-
+import { type Lists } from '.keystone/types';
 import { allOperations } from '@keystone-6/core/access';
 import { isSignedIn, permissions, rules } from '../auth/access';
 
-export const siteConfigSchema = list({
+export const siteConfigSchema: Lists.SiteConfig = list({
   access: {
     operation: {
       ...allOperations(isSignedIn),
@@ -13,8 +13,7 @@ export const siteConfigSchema = list({
       query: () => true,
     },
     filter: {
-      query: () => true,
-      // query: rules.canReadItems,
+      query: rules.canReadItems,
       update: rules.canManageItems,
       delete: rules.canManageItems,
     },

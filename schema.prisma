@@ -31,8 +31,6 @@ model Role {
   canManageUsers    Boolean @default(false)
   canManageRoles    Boolean @default(false)
   canUseAdminUI     Boolean @default(false)
-  canReadChapters   Boolean @default(false)
-  canReadImages     Boolean @default(false)
   users             User[]  @relation("User_role")
 }
 

@@ -5,6 +5,7 @@ import { statelessSessions } from '@keystone-6/core/session';
 let sessionSecret = process.env.SESSION_SECRET;
 
 const sessionMaxAge = process.env.SESSION_MAX_AGE;
+console.log(sessionMaxAge);
 
 // withAuth är en funktion runt base config.
 const { withAuth } = createAuth({

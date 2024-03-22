@@ -1,14 +1,14 @@
 import { list } from '@keystone-6/core';
 import { text, integer, select, timestamp, json } from '@keystone-6/core/fields';
 import Stripe from 'stripe';
-
+import { type Lists } from '.keystone/types';
 import { allOperations } from '@keystone-6/core/access';
 import { isSignedIn, rules } from '../auth/access';
 import { Email } from '../utils/email';
 
 const stripe = new Stripe(process.env.STRIPE_WEBHOOK_SECRET as string);
 
-export const orderSchema = list({
+export const orderSchema: Lists.Order = list({
   access: {
     operation: {
       ...allOperations(isSignedIn),
@@ -24,20 +24,22 @@ export const orderSchema = list({
   hooks: {
     resolveInput: async ({ operation, resolvedData, inputData }) => {
       if (operation === 'create') {
-        console.log('skapa order');
-        const session = await stripe.checkout.sessions.retrieve(inputData.paymentId);
+        console.log('Creating order');
+        const session = await stripe.checkout.sessions.retrieve(
+          inputData.paymentId as string
+        );
 
         if (session.payment_status === 'paid') {
-          return resolvedData;
+          return resolvedData as any;
         } else {
           throw new Error('Payment verification failed');
         }
       }
     },
     afterOperation: async ({ operation, item, resolvedData }) => {
-      console.log('skicka mail');
       try {
         if (operation === 'create') {
+          console.log('Sending email');
           const fromEmail = `${process.env.EMAIL_FROM}}`;
           const { customerName, customerEmail, amount, orderDetails, createdAt } =
             resolvedData;
@@ -57,7 +59,7 @@ export const orderSchema = list({
           };
 
           // Skicka ett email till kunden
-          await new Email(fromEmail, mailData).sendOrderConfirmation();
+          await new Email(fromEmail, mailData as any).sendOrderConfirmation();
         }
       } catch (error) {
         console.log(error);
@@ -91,7 +93,7 @@ export const orderSchema = list({
       hooks: {
         resolveInput: ({ operation, resolvedData, inputData }) => {
           if (operation === 'create') {
-            return resolvedData.amount / 100;
+            return (resolvedData.amount as any) / 100;
           }
         },
       },

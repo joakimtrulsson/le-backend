@@ -6,39 +6,36 @@
 
 ```
 PORT=3000
-BASE_URL = 'http://localhost:${PORT}/'
-NEXT_API_URL = '${BASE_URL}api/graphql'
-CORS_FRONTEND_ORIGIN=
+BASE_URL=http://localhost:$PORT
+NEXT_PUBLIC_API_URL="http://localhost:3000/api/graphql"
+SESSION_SECRET="yoursupersupersecretmysupersecretsecretsupersecret"
+SESSION_MAX_AGE=3600000
+HEROKU_POSTGRESQL_BROWN_URL="postgres://postgres@localhost:5432/yourDbName"
 
-# Session
-SESSION_SECRET="myultrasecretstringmyultrasecretstring"
-SESSION_MAX_AGE=2592000
+# Cors
+CORS_FRONTEND_ORIGIN="http://localhost:5173"
 
-# Database
-HEROKU_POSTGRESQL_BROWN_URL=
+# Bucketeer
+BUCKETEER_BUCKET_NAME=""
+BUCKETEER_AWS_REGION=""
+BUCKETEER_AWS_ACCESS_KEY_ID=""
+BUCKETEER_AWS_SECRET_ACCESS_KEY=""
 
-# Storage
-BUCKETEER_BUCKET_NAME=
-BUCKETEER_AWS_REGION=
-BUCKETEER_AWS_ACCESS_KEY_ID=
-BUCKETEER_AWS_SECRET_ACCESS_KEY=
-
-# Media
-MEDIA_URL="${BASE_URL}public/media"
-IMAGE_URL="${BASE_URL}public/images"
-
-# Mail
-## Development (Mailtrap)
-EMAIL_USERNAME=yourusername
-EMAIL_PASSWORD=yourpassword
-EMAIL_HOST=sandbox.smtp.mailtrap.io
+# Mai
+EMAIL_USERNAME=""
+EMAIL_PASSWORD=""
+EMAIL_HOST=s"andbox.smtp.mailtrap.io"
 EMAIL_PORT=465
 
-EMAIL_FROM="your@email.com"
+EMAIL_FROM=""
 
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-STRIPE_WEBOOKH_SIGN_SECRET=
+# Stripe
+STRIPE_SECRET_KEY=""
+STRIPE_WEBHOOK_SECRET=""
+STRIPE_WEBHOOK_SIGN_SECRET=""
+
+# reCAPTCHA
+RECAPTCHA_SITE_SECRET=""
 
 ```
 

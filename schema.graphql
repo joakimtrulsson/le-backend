@@ -82,8 +82,6 @@ type Role {
   canManageUsers: Boolean
   canManageRoles: Boolean
   canUseAdminUI: Boolean
-  canReadChapters: Boolean
-  canReadImages: Boolean
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
 }
@@ -105,8 +103,6 @@ input RoleWhereInput {
   canManageUsers: BooleanFilter
   canManageRoles: BooleanFilter
   canUseAdminUI: BooleanFilter
-  canReadChapters: BooleanFilter
-  canReadImages: BooleanFilter
   users: UserManyRelationFilter
 }
 
@@ -165,8 +161,6 @@ input RoleOrderByInput {
   canManageUsers: OrderDirection
   canManageRoles: OrderDirection
   canUseAdminUI: OrderDirection
-  canReadChapters: OrderDirection
-  canReadImages: OrderDirection
 }
 
 input RoleUpdateInput {
@@ -178,8 +172,6 @@ input RoleUpdateInput {
   canManageUsers: Boolean
   canManageRoles: Boolean
   canUseAdminUI: Boolean
-  canReadChapters: Boolean
-  canReadImages: Boolean
   users: UserRelateToManyForUpdateInput
 }
 
@@ -204,8 +196,6 @@ input RoleCreateInput {
   canManageUsers: Boolean
   canManageRoles: Boolean
   canUseAdminUI: Boolean
-  canReadChapters: Boolean
-  canReadImages: Boolean
   users: UserRelateToManyForCreateInput
 }
 

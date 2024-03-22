@@ -1,10 +1,10 @@
 import { list } from '@keystone-6/core';
 import { text, calendarDay } from '@keystone-6/core/fields';
-
+import { type Lists } from '.keystone/types';
 import { allOperations } from '@keystone-6/core/access';
 import { isSignedIn, permissions, rules } from '../auth/access';
 
-export const reviewSchema = list({
+export const reviewSchema: Lists.Review = list({
   access: {
     operation: {
       ...allOperations(isSignedIn),
@@ -12,8 +12,7 @@ export const reviewSchema = list({
       query: () => true,
     },
     filter: {
-      query: () => true,
-      // query: rules.canReadItems,
+      query: rules.canReadItems,
       update: rules.canManageItems,
       delete: rules.canManageItems,
     },

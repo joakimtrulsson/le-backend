@@ -1,10 +1,10 @@
 import { list } from '@keystone-6/core';
 import { text, integer, image, select } from '@keystone-6/core/fields';
-
 import { allOperations } from '@keystone-6/core/access';
 import { isSignedIn, permissions, rules } from '../auth/access';
+import { type Lists } from '.keystone/types';
 
-export const productSchema = list({
+export const productSchema: Lists.Product = list({
   access: {
     operation: {
       ...allOperations(isSignedIn),
@@ -12,8 +12,7 @@ export const productSchema = list({
       query: () => true,
     },
     filter: {
-      query: () => true,
-      // query: rules.canReadItems,
+      query: rules.canReadItems,
       update: rules.canManageItems,
       delete: rules.canManageItems,
     },

@@ -34,7 +34,6 @@ __export(keystone_exports, {
 });
 module.exports = __toCommonJS(keystone_exports);
 var import_core8 = require("@keystone-6/core");
-var import_session2 = require("@keystone-6/core/session");
 var import_dotenv = __toESM(require("dotenv"));
 var import_express = __toESM(require("express"));
 
@@ -60,28 +59,28 @@ var rules = {
     if (session2.data.role?.canManageAllItems) {
       return true;
     }
-    return { author: { id: { equals: session2.itemId } } };
+    return false;
   },
   canManageItems: ({ session: session2 }) => {
     if (!session2)
       return false;
     if (session2.data.role?.canManageAllItems)
       return true;
-    return { author: { id: { equals: session2.itemId } } };
+    return false;
   },
   canReadUsers: ({ session: session2 }) => {
     if (!session2)
       return false;
     if (session2.data.role?.canSeeOtherUsers)
       return true;
-    return { id: { equals: session2.itemId } };
+    return false;
   },
   canUpdateUsers: ({ session: session2 }) => {
     if (!session2)
       return false;
     if (session2.data.role?.canEditOtherUsers)
       return true;
-    return { id: { equals: session2.itemId } };
+    return false;
   }
 };
 
@@ -130,7 +129,6 @@ var userSchema = (0, import_core.list)({
     password: (0, import_fields.password)({
       access: {
         read: import_access.denyAll,
-        // Event: is this required?
         update: ({ session: session2, item }) => permissions.canManageUsers({ session: session2 }) || session2?.itemId === item.id
       },
       validation: { isRequired: true }
@@ -169,7 +167,7 @@ var roleSchema = (0, import_core2.list)({
     hideCreate: (args) => !permissions.canManageRoles(args),
     hideDelete: (args) => !permissions.canManageRoles(args),
     listView: {
-      initialColumns: ["name", "author"]
+      initialColumns: ["name"]
     },
     itemView: {
       defaultFieldMode: (args) => permissions.canManageRoles(args) ? "edit" : "read"
@@ -184,8 +182,6 @@ var roleSchema = (0, import_core2.list)({
     canManageUsers: (0, import_fields2.checkbox)({ defaultValue: false }),
     canManageRoles: (0, import_fields2.checkbox)({ defaultValue: false }),
     canUseAdminUI: (0, import_fields2.checkbox)({ defaultValue: false }),
-    canReadChapters: (0, import_fields2.checkbox)({ defaultValue: false }),
-    canReadImages: (0, import_fields2.checkbox)({ defaultValue: false }),
     users: (0, import_fields2.relationship)({
       ref: "User.role",
       many: true,
@@ -208,8 +204,7 @@ var productSchema = (0, import_core3.list)({
       query: () => true
     },
     filter: {
-      query: () => true,
-      // query: rules.canReadItems,
+      query: rules.canReadItems,
       update: rules.canManageItems,
       delete: rules.canManageItems
     }
@@ -279,9 +274,9 @@ var projectSchema = (0, import_core4.list)({
       query: () => true
     },
     filter: {
-      query: () => true,
-      // query: rules.canReadItems,
-      update: rules.canManageItems,
+      query: rules.canReadItems,
+      update: () => true,
+      // Replace 'rules.canManageItems' with a valid filter condition
       delete: rules.canManageItems
     }
   },
@@ -330,8 +325,7 @@ var reviewSchema = (0, import_core5.list)({
       query: () => true
     },
     filter: {
-      query: () => true,
-      // query: rules.canReadItems,
+      query: rules.canReadItems,
       update: rules.canManageItems,
       delete: rules.canManageItems
     }
@@ -360,8 +354,7 @@ var siteConfigSchema = (0, import_core6.list)({
       query: () => true
     },
     filter: {
-      query: () => true,
-      // query: rules.canReadItems,
+      query: rules.canReadItems,
       update: rules.canManageItems,
       delete: rules.canManageItems
     }
@@ -563,8 +556,10 @@ var orderSchema = (0, import_core7.list)({
   hooks: {
     resolveInput: async ({ operation, resolvedData, inputData }) => {
       if (operation === "create") {
-        console.log("skapa order");
-        const session2 = await stripe.checkout.sessions.retrieve(inputData.paymentId);
+        console.log("Creating order");
+        const session2 = await stripe.checkout.sessions.retrieve(
+          inputData.paymentId
+        );
         if (session2.payment_status === "paid") {
           return resolvedData;
         } else {
@@ -573,9 +568,9 @@ var orderSchema = (0, import_core7.list)({
       }
     },
     afterOperation: async ({ operation, item, resolvedData }) => {
-      console.log("skicka mail");
       try {
         if (operation === "create") {
+          console.log("Sending email");
           const fromEmail = `${process.env.EMAIL_FROM}}`;
           const { customerName, customerEmail, amount, orderDetails, createdAt } = resolvedData;
           const { id } = item;
@@ -689,6 +684,7 @@ var import_auth = require("@keystone-6/auth");
 var import_session = require("@keystone-6/core/session");
 var sessionSecret = process.env.SESSION_SECRET;
 var sessionMaxAge = process.env.SESSION_MAX_AGE;
+console.log(sessionMaxAge);
 var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   // Ett identity field på usern.
@@ -730,9 +726,6 @@ var session = (0, import_session.statelessSessions)({
   maxAge: Number(sessionMaxAge),
   secret: sessionSecret
 });
-
-// keystone.ts
-var import_stripe4 = __toESM(require("stripe"));
 
 // routes/checkoutSession.ts
 var import_stripe2 = __toESM(require("stripe"));
@@ -872,10 +865,8 @@ var verifyToken = async (req, res) => {
 
 // keystone.ts
 import_dotenv.default.config();
-var stripe4 = new import_stripe4.default(process.env.STRIPE_WEBHOOK_SECRET);
 var {
   PORT,
-  BASE_URL,
   HEROKU_POSTGRESQL_BROWN_URL,
   CORS_FRONTEND_ORIGIN,
   BUCKETEER_BUCKET_NAME: bucketName,
@@ -930,7 +921,7 @@ var keystone_default = withAuth(
         return session2?.data.role?.canUseAdminUI ?? false;
       }
     },
-    session: (0, import_session2.statelessSessions)()
+    session
   })
 );
 //# sourceMappingURL=config.js.map
