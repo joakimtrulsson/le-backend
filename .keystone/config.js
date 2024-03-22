@@ -684,6 +684,7 @@ var import_auth = require("@keystone-6/auth");
 var import_session = require("@keystone-6/core/session");
 var sessionSecret = process.env.SESSION_SECRET;
 var sessionMaxAge = process.env.SESSION_MAX_AGE;
+console.log(sessionMaxAge);
 var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   // Ett identity field på usern.
