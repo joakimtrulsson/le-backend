@@ -12,7 +12,7 @@ export const reviewSchema: Lists.Review = list({
       query: () => true,
     },
     filter: {
-      query: rules.canReadItems,
+      query: () => true,
       update: rules.canManageItems,
       delete: rules.canManageItems,
     },

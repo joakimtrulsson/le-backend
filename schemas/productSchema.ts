@@ -12,7 +12,7 @@ export const productSchema: Lists.Product = list({
       query: () => true,
     },
     filter: {
-      query: rules.canReadItems,
+      query: () => true,
       update: rules.canManageItems,
       delete: rules.canManageItems,
     },
@@ -48,7 +48,7 @@ export const productSchema: Lists.Product = list({
       ui: {
         displayMode: 'select',
         createView: { fieldMode: 'edit' },
-        itemView: { fieldMode: 'edit' },
+        itemView: { fieldMode: 'read' },
       },
     }),
 

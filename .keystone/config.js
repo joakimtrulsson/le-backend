@@ -55,8 +55,10 @@ var permissions = {
 var rules = {
   canReadItems: ({ session: session2 }) => {
     if (!session2)
+      return false;
+    if (session2.data.role?.canReadItems)
       return true;
-    if (session2.data.role?.canManageAllItems) {
+    {
       return true;
     }
     return false;
@@ -176,6 +178,7 @@ var roleSchema = (0, import_core2.list)({
   fields: {
     name: (0, import_fields2.text)({ validation: { isRequired: true } }),
     canCreateItems: (0, import_fields2.checkbox)({ defaultValue: false }),
+    canReadItems: (0, import_fields2.checkbox)({ defaultValue: false }),
     canManageAllItems: (0, import_fields2.checkbox)({ defaultValue: false }),
     canSeeOtherUsers: (0, import_fields2.checkbox)({ defaultValue: false }),
     canEditOtherUsers: (0, import_fields2.checkbox)({ defaultValue: false }),
@@ -204,7 +207,7 @@ var productSchema = (0, import_core3.list)({
       query: () => true
     },
     filter: {
-      query: rules.canReadItems,
+      query: () => true,
       update: rules.canManageItems,
       delete: rules.canManageItems
     }
@@ -237,7 +240,7 @@ var productSchema = (0, import_core3.list)({
       ui: {
         displayMode: "select",
         createView: { fieldMode: "edit" },
-        itemView: { fieldMode: "edit" }
+        itemView: { fieldMode: "read" }
       }
     }),
     price: (0, import_fields3.integer)({ label: "Pris", validation: { isRequired: true } }),
@@ -283,9 +286,8 @@ var productCategorySchema = (0, import_core4.list)({
       query: () => true
     },
     filter: {
-      query: rules.canReadItems,
-      update: () => true,
-      // Replace 'rules.canManageItems' with a valid filter condition
+      query: () => true,
+      update: rules.canManageItems,
       delete: rules.canManageItems
     }
   },
@@ -322,9 +324,8 @@ var projectSchema = (0, import_core5.list)({
       query: () => true
     },
     filter: {
-      query: rules.canReadItems,
-      update: () => true,
-      // Replace 'rules.canManageItems' with a valid filter condition
+      query: () => true,
+      update: rules.canManageItems,
       delete: rules.canManageItems
     }
   },
@@ -373,7 +374,7 @@ var reviewSchema = (0, import_core6.list)({
       query: () => true
     },
     filter: {
-      query: rules.canReadItems,
+      query: () => true,
       update: rules.canManageItems,
       delete: rules.canManageItems
     }
@@ -402,7 +403,7 @@ var siteConfigSchema = (0, import_core7.list)({
       query: () => true
     },
     filter: {
-      query: rules.canReadItems,
+      query: () => true,
       update: rules.canManageItems,
       delete: rules.canManageItems
     }

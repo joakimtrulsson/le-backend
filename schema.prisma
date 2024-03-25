@@ -25,6 +25,7 @@ model Role {
   id                String  @id @default(uuid()) @postgresql.Uuid
   name              String  @default("")
   canCreateItems    Boolean @default(false)
+  canReadItems      Boolean @default(false)
   canManageAllItems Boolean @default(false)
   canSeeOtherUsers  Boolean @default(false)
   canEditOtherUsers Boolean @default(false)
