@@ -76,6 +76,7 @@ type Role {
   id: ID!
   name: String
   canCreateItems: Boolean
+  canReadItems: Boolean
   canManageAllItems: Boolean
   canSeeOtherUsers: Boolean
   canEditOtherUsers: Boolean
@@ -97,6 +98,7 @@ input RoleWhereInput {
   id: IDFilter
   name: StringFilter
   canCreateItems: BooleanFilter
+  canReadItems: BooleanFilter
   canManageAllItems: BooleanFilter
   canSeeOtherUsers: BooleanFilter
   canEditOtherUsers: BooleanFilter
@@ -155,6 +157,7 @@ input RoleOrderByInput {
   id: OrderDirection
   name: OrderDirection
   canCreateItems: OrderDirection
+  canReadItems: OrderDirection
   canManageAllItems: OrderDirection
   canSeeOtherUsers: OrderDirection
   canEditOtherUsers: OrderDirection
@@ -166,6 +169,7 @@ input RoleOrderByInput {
 input RoleUpdateInput {
   name: String
   canCreateItems: Boolean
+  canReadItems: Boolean
   canManageAllItems: Boolean
   canSeeOtherUsers: Boolean
   canEditOtherUsers: Boolean
@@ -190,6 +194,7 @@ input RoleUpdateArgs {
 input RoleCreateInput {
   name: String
   canCreateItems: Boolean
+  canReadItems: Boolean
   canManageAllItems: Boolean
   canSeeOtherUsers: Boolean
   canEditOtherUsers: Boolean

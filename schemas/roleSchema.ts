@@ -29,6 +29,8 @@ export const roleSchema: Lists.Role = list({
 
     canCreateItems: checkbox({ defaultValue: false }),
 
+    canReadItems: checkbox({ defaultValue: false }),
+
     canManageAllItems: checkbox({ defaultValue: false }),
 
     canSeeOtherUsers: checkbox({ defaultValue: false }),

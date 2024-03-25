@@ -13,7 +13,7 @@ export const siteConfigSchema: Lists.SiteConfig = list({
       query: () => true,
     },
     filter: {
-      query: rules.canReadItems,
+      query: () => true,
       update: rules.canManageItems,
       delete: rules.canManageItems,
     },

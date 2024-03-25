@@ -12,8 +12,8 @@ export const projectSchema: Lists.Project = list({
       query: () => true,
     },
     filter: {
-      query: rules.canReadItems,
-      update: () => true, // Replace 'rules.canManageItems' with a valid filter condition
+      query: () => true,
+      update: rules.canManageItems,
       delete: rules.canManageItems,
     },
   },

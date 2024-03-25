@@ -7,6 +7,7 @@ export type Session = {
       id: string;
       name: string;
       canCreateItems: boolean;
+      canReadItems: boolean;
       canManageAllItems: boolean;
       canSeeOtherUsers: boolean;
       canEditOtherUsers: boolean;
@@ -40,9 +41,10 @@ export const permissions = {
 // Rules är funktioner som returnerar true, false eller filter som begränsar datan.
 export const rules = {
   canReadItems: ({ session }: AccessArgs) => {
-    if (!session) return true;
+    if (!session) return false;
 
-    if (session.data.role?.canManageAllItems) {
+    if (session.data.role?.canReadItems) return true;
+    {
       return true;
     }
     return false;
