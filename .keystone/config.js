@@ -33,7 +33,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core8 = require("@keystone-6/core");
+var import_core9 = require("@keystone-6/core");
 var import_dotenv = __toESM(require("dotenv"));
 var import_express = __toESM(require("express"));
 
@@ -231,6 +231,15 @@ var productSchema = (0, import_core3.list)({
     }),
     description: (0, import_fields3.text)({ label: "Produktbeskrivning", validation: { isRequired: true } }),
     productImage: (0, import_fields3.image)({ label: "Produktbild", storage: "s3_image" }),
+    productCategory: (0, import_fields3.relationship)({
+      ref: "ProductCategory.products",
+      many: false,
+      ui: {
+        displayMode: "select",
+        createView: { fieldMode: "edit" },
+        itemView: { fieldMode: "edit" }
+      }
+    }),
     price: (0, import_fields3.integer)({ label: "Pris", validation: { isRequired: true } }),
     priceUnit: (0, import_fields3.select)({
       label: "Prisenhet",
@@ -262,14 +271,53 @@ var productSchema = (0, import_core3.list)({
   }
 });
 
-// schemas/projectSchema.ts
+// schemas/productCategorySchema.ts
 var import_core4 = require("@keystone-6/core");
 var import_fields4 = require("@keystone-6/core/fields");
 var import_access7 = require("@keystone-6/core/access");
-var projectSchema = (0, import_core4.list)({
+var productCategorySchema = (0, import_core4.list)({
   access: {
     operation: {
       ...(0, import_access7.allOperations)(isSignedIn),
+      create: permissions.canCreateItems,
+      query: () => true
+    },
+    filter: {
+      query: rules.canReadItems,
+      update: () => true,
+      // Replace 'rules.canManageItems' with a valid filter condition
+      delete: rules.canManageItems
+    }
+  },
+  ui: {
+    labelField: "categoryTitle",
+    listView: {
+      initialColumns: ["categoryTitle"],
+      initialSort: { field: "categoryTitle", direction: "ASC" },
+      pageSize: 50
+    }
+  },
+  fields: {
+    categoryTitle: (0, import_fields4.text)({
+      label: "Kategorititel",
+      isIndexed: "unique",
+      validation: { isRequired: true }
+    }),
+    products: (0, import_fields4.relationship)({
+      ref: "Product.productCategory",
+      many: true
+    })
+  }
+});
+
+// schemas/projectSchema.ts
+var import_core5 = require("@keystone-6/core");
+var import_fields5 = require("@keystone-6/core/fields");
+var import_access9 = require("@keystone-6/core/access");
+var projectSchema = (0, import_core5.list)({
+  access: {
+    operation: {
+      ...(0, import_access9.allOperations)(isSignedIn),
       create: permissions.canCreateItems,
       query: () => true
     },
@@ -289,19 +337,19 @@ var projectSchema = (0, import_core4.list)({
     }
   },
   fields: {
-    projectTitle: (0, import_fields4.text)({ label: "Projekttitel", validation: { isRequired: true } }),
-    shortDescription: (0, import_fields4.text)({
+    projectTitle: (0, import_fields5.text)({ label: "Projekttitel", validation: { isRequired: true } }),
+    shortDescription: (0, import_fields5.text)({
       label: "Kort beskrivning",
       validation: { isRequired: true, length: { max: 100 } }
     }),
-    fullDescription: (0, import_fields4.text)({
+    fullDescription: (0, import_fields5.text)({
       label: "L\xE5ng beskrivning",
       validation: { isRequired: true }
     }),
-    projectImage: (0, import_fields4.image)({ label: "Projektbild", storage: "s3_image" }),
-    date: (0, import_fields4.calendarDay)({ label: "Datum", validation: { isRequired: true } }),
-    location: (0, import_fields4.text)({ label: "Plats", validation: { isRequired: true } }),
-    icon: (0, import_fields4.json)({
+    projectImage: (0, import_fields5.image)({ label: "Projektbild", storage: "s3_image" }),
+    date: (0, import_fields5.calendarDay)({ label: "Datum", validation: { isRequired: true } }),
+    location: (0, import_fields5.text)({ label: "Plats", validation: { isRequired: true } }),
+    icon: (0, import_fields5.json)({
       label: "Ikon",
       ui: {
         views: "./customViews/IconPickerField.tsx",
@@ -314,13 +362,13 @@ var projectSchema = (0, import_core4.list)({
 });
 
 // schemas/reviewSchema.ts
-var import_core5 = require("@keystone-6/core");
-var import_fields5 = require("@keystone-6/core/fields");
-var import_access9 = require("@keystone-6/core/access");
-var reviewSchema = (0, import_core5.list)({
+var import_core6 = require("@keystone-6/core");
+var import_fields6 = require("@keystone-6/core/fields");
+var import_access11 = require("@keystone-6/core/access");
+var reviewSchema = (0, import_core6.list)({
   access: {
     operation: {
-      ...(0, import_access9.allOperations)(isSignedIn),
+      ...(0, import_access11.allOperations)(isSignedIn),
       create: permissions.canCreateItems,
       query: () => true
     },
@@ -334,22 +382,22 @@ var reviewSchema = (0, import_core5.list)({
     labelField: "reviewBy"
   },
   fields: {
-    reviewBy: (0, import_fields5.text)({ label: "Skriven av", validation: { isRequired: true } }),
-    reviewText: (0, import_fields5.text)({ label: "Omd\xF6me", validation: { isRequired: true } }),
-    date: (0, import_fields5.calendarDay)({ label: "Datum", validation: { isRequired: true } }),
-    location: (0, import_fields5.text)({ label: "Plats", validation: { isRequired: true } })
+    reviewBy: (0, import_fields6.text)({ label: "Skriven av", validation: { isRequired: true } }),
+    reviewText: (0, import_fields6.text)({ label: "Omd\xF6me", validation: { isRequired: true } }),
+    date: (0, import_fields6.calendarDay)({ label: "Datum", validation: { isRequired: true } }),
+    location: (0, import_fields6.text)({ label: "Plats", validation: { isRequired: true } })
   }
 });
 
 // schemas/siteConfigSchema.ts
-var import_core6 = require("@keystone-6/core");
-var import_fields6 = require("@keystone-6/core/fields");
+var import_core7 = require("@keystone-6/core");
+var import_fields7 = require("@keystone-6/core/fields");
 var import_fields_document = require("@keystone-6/fields-document");
-var import_access11 = require("@keystone-6/core/access");
-var siteConfigSchema = (0, import_core6.list)({
+var import_access13 = require("@keystone-6/core/access");
+var siteConfigSchema = (0, import_core7.list)({
   access: {
     operation: {
-      ...(0, import_access11.allOperations)(isSignedIn),
+      ...(0, import_access13.allOperations)(isSignedIn),
       create: permissions.canCreateItems,
       query: () => true
     },
@@ -361,7 +409,7 @@ var siteConfigSchema = (0, import_core6.list)({
   },
   isSingleton: true,
   fields: {
-    siteTitle: (0, import_fields6.text)({
+    siteTitle: (0, import_fields7.text)({
       label: "Hero titel",
       validation: { isRequired: true }
     }),
@@ -380,10 +428,10 @@ var siteConfigSchema = (0, import_core6.list)({
         }
       }
     }),
-    heroImage1: (0, import_fields6.image)({ label: "Hero bild 1", storage: "s3_image" }),
-    heroImage2: (0, import_fields6.image)({ label: "Hero bild 2", storage: "s3_image" }),
-    heroImage3: (0, import_fields6.image)({ label: "Hero bild 3", storage: "s3_image" }),
-    heroImage4: (0, import_fields6.image)({ label: "Hero bild 4", storage: "s3_image" }),
+    heroImage1: (0, import_fields7.image)({ label: "Hero bild 1", storage: "s3_image" }),
+    heroImage2: (0, import_fields7.image)({ label: "Hero bild 2", storage: "s3_image" }),
+    heroImage3: (0, import_fields7.image)({ label: "Hero bild 3", storage: "s3_image" }),
+    heroImage4: (0, import_fields7.image)({ label: "Hero bild 4", storage: "s3_image" }),
     projectsPreamble: (0, import_fields_document.document)({
       label: "Projekt f\xF6rord",
       formatting: {
@@ -463,10 +511,10 @@ var siteConfigSchema = (0, import_core6.list)({
 });
 
 // schemas/orderSchema.ts
-var import_core7 = require("@keystone-6/core");
-var import_fields7 = require("@keystone-6/core/fields");
+var import_core8 = require("@keystone-6/core");
+var import_fields8 = require("@keystone-6/core/fields");
 var import_stripe = __toESM(require("stripe"));
-var import_access13 = require("@keystone-6/core/access");
+var import_access15 = require("@keystone-6/core/access");
 
 // utils/email.ts
 var import_nodemailer = __toESM(require("nodemailer"));
@@ -540,10 +588,10 @@ var Email = class {
 
 // schemas/orderSchema.ts
 var stripe = new import_stripe.default(process.env.STRIPE_WEBHOOK_SECRET);
-var orderSchema = (0, import_core7.list)({
+var orderSchema = (0, import_core8.list)({
   access: {
     operation: {
-      ...(0, import_access13.allOperations)(isSignedIn),
+      ...(0, import_access15.allOperations)(isSignedIn),
       create: () => true,
       query: () => true
     },
@@ -602,16 +650,16 @@ var orderSchema = (0, import_core7.list)({
     }
   },
   fields: {
-    customerName: (0, import_fields7.text)({
+    customerName: (0, import_fields8.text)({
       label: "Kundnamn",
       validation: { isRequired: true }
     }),
-    customerEmail: (0, import_fields7.text)({
+    customerEmail: (0, import_fields8.text)({
       label: "Kundemail",
       validation: { isRequired: true }
     }),
-    orderDetails: (0, import_fields7.json)({ label: "Produkter" }),
-    amount: (0, import_fields7.integer)({
+    orderDetails: (0, import_fields8.json)({ label: "Produkter" }),
+    amount: (0, import_fields8.integer)({
       label: "Summa",
       validation: { isRequired: true },
       hooks: {
@@ -622,16 +670,16 @@ var orderSchema = (0, import_core7.list)({
         }
       }
     }),
-    paymentId: (0, import_fields7.text)({
+    paymentId: (0, import_fields8.text)({
       label: "Betalningsreferens",
       isIndexed: "unique",
       validation: { isRequired: true }
     }),
-    cardName: (0, import_fields7.text)({ label: "Kortinnehavare" }),
-    createdAt: (0, import_fields7.timestamp)({
+    cardName: (0, import_fields8.text)({ label: "Kortinnehavare" }),
+    createdAt: (0, import_fields8.timestamp)({
       defaultValue: { kind: "now" }
     }),
-    status: (0, import_fields7.select)({
+    status: (0, import_fields8.select)({
       options: [
         { label: "Betald", value: "confirmed" },
         { label: "Ej betald", value: "notpayed" }
@@ -648,6 +696,7 @@ var lists = {
   User: userSchema,
   Role: roleSchema,
   Product: productSchema,
+  ProductCategory: productCategorySchema,
   Project: projectSchema,
   Review: reviewSchema,
   SiteConfig: siteConfigSchema,
@@ -684,7 +733,6 @@ var import_auth = require("@keystone-6/auth");
 var import_session = require("@keystone-6/core/session");
 var sessionSecret = process.env.SESSION_SECRET;
 var sessionMaxAge = process.env.SESSION_MAX_AGE;
-console.log(sessionMaxAge);
 var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   // Ett identity field på usern.
@@ -723,7 +771,8 @@ var { withAuth } = (0, import_auth.createAuth)({
     }`
 });
 var session = (0, import_session.statelessSessions)({
-  maxAge: Number(sessionMaxAge),
+  // maxAge: Number(sessionMaxAge),
+  maxAge: 60 * 60 * 24 * 30,
   secret: sessionSecret
 });
 
@@ -875,7 +924,7 @@ var {
   BUCKETEER_AWS_SECRET_ACCESS_KEY: secretAccessKey
 } = process.env;
 var keystone_default = withAuth(
-  (0, import_core8.config)({
+  (0, import_core9.config)({
     db: {
       provider: "postgresql",
       url: HEROKU_POSTGRESQL_BROWN_URL,

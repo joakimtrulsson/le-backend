@@ -39,6 +39,42 @@ RECAPTCHA_SITE_SECRET=""
 
 ```
 
+## Google reCAPTCHA
+
+- Se README.md i le-frontend repo.
+
+## STRIPE
+
+- Skapa ett konto på [Stripe](https://stripe.com/).
+- När du har loggat in, gå till [Stripe Dashboard](https://dashboard.stripe.com/) och klicka på "Developers" i sidomenyn, och sedan "API keys". Här hittar du dina API-nycklar. Du kommer att se två nycklar: "Publishable key" och "Secret key".
+- Lägg till dessa nycklar i din `.env`-fil:
+
+- För att starta en lokal webhook, behöver du först installera Stripe CLI. Du kan göra detta med följande kommando i terminalen:
+
+```bash
+brew install stripe/stripe-cli/stripe
+```
+
+- Logga in på ditt Stripe-konto via CLI med följande kommando:
+
+```bash
+stripe login
+```
+
+- Starta din webhook med följande kommando:
+
+```bash
+stripe listen --forward-to localhost:3000/webhook-checkout
+```
+
+- Du kommer att få en webhook secret, som du också bör lägga till i din `.env`-fil:
+
+```env
+STRIPE_WEBHOOK_SIGN_SECRET="your-webhook-secret"
+```
+
+- Byt ut `"your-webhook-secret"` med den faktiska token du fick från `stripe listen` kommandot.
+
 ## Mailtrap
 
 - Gå till Mailtrap och skapa ett konto om du inte redan har ett.

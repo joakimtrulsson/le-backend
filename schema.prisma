@@ -35,18 +35,28 @@ model Role {
 }
 
 model Product {
-  id                     String  @id @default(uuid()) @postgresql.Uuid
-  productTitle           String  @unique @default("")
-  description            String  @default("")
+  id                     String           @id @default(uuid()) @postgresql.Uuid
+  productTitle           String           @unique @default("")
+  description            String           @default("")
   productImage_filesize  Int?
   productImage_extension String?
   productImage_width     Int?
   productImage_height    Int?
   productImage_id        String?
+  productCategory        ProductCategory? @relation("Product_productCategory", fields: [productCategoryId], references: [id])
+  productCategoryId      String?          @map("productCategory") @postgresql.Uuid
   price                  Int
-  priceUnit              String  @default("kr")
+  priceUnit              String           @default("kr")
   discountPrice          Int?
-  status                 String  @default("draft")
+  status                 String           @default("draft")
+
+  @@index([productCategoryId])
+}
+
+model ProductCategory {
+  id            String    @id @default(uuid()) @postgresql.Uuid
+  categoryTitle String    @unique @default("")
+  products      Product[] @relation("Product_productCategory")
 }
 
 model Project {

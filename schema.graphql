@@ -209,6 +209,7 @@ type Product {
   productTitle: String
   description: String
   productImage: ImageFieldOutput
+  productCategory: ProductCategory
   price: Int
   priceUnit: String
   discountPrice: Int
@@ -243,6 +244,7 @@ input ProductWhereInput {
   id: IDFilter
   productTitle: StringFilter
   description: StringFilter
+  productCategory: ProductCategoryWhereInput
   price: IntFilter
   priceUnit: StringFilter
   discountPrice: IntNullableFilter
@@ -285,6 +287,7 @@ input ProductUpdateInput {
   productTitle: String
   description: String
   productImage: ImageFieldInput
+  productCategory: ProductCategoryRelateToOneForUpdateInput
   price: Int
   priceUnit: String
   discountPrice: Int
@@ -298,6 +301,12 @@ input ImageFieldInput {
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
+input ProductCategoryRelateToOneForUpdateInput {
+  create: ProductCategoryCreateInput
+  connect: ProductCategoryWhereUniqueInput
+  disconnect: Boolean
+}
+
 input ProductUpdateArgs {
   where: ProductWhereUniqueInput!
   data: ProductUpdateInput!
@@ -307,10 +316,75 @@ input ProductCreateInput {
   productTitle: String
   description: String
   productImage: ImageFieldInput
+  productCategory: ProductCategoryRelateToOneForCreateInput
   price: Int
   priceUnit: String
   discountPrice: Int
   status: String
+}
+
+input ProductCategoryRelateToOneForCreateInput {
+  create: ProductCategoryCreateInput
+  connect: ProductCategoryWhereUniqueInput
+}
+
+type ProductCategory {
+  id: ID!
+  categoryTitle: String
+  products(where: ProductWhereInput! = {}, orderBy: [ProductOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProductWhereUniqueInput): [Product!]
+  productsCount(where: ProductWhereInput! = {}): Int
+}
+
+input ProductCategoryWhereUniqueInput {
+  id: ID
+  categoryTitle: String
+}
+
+input ProductCategoryWhereInput {
+  AND: [ProductCategoryWhereInput!]
+  OR: [ProductCategoryWhereInput!]
+  NOT: [ProductCategoryWhereInput!]
+  id: IDFilter
+  categoryTitle: StringFilter
+  products: ProductManyRelationFilter
+}
+
+input ProductManyRelationFilter {
+  every: ProductWhereInput
+  some: ProductWhereInput
+  none: ProductWhereInput
+}
+
+input ProductCategoryOrderByInput {
+  id: OrderDirection
+  categoryTitle: OrderDirection
+}
+
+input ProductCategoryUpdateInput {
+  categoryTitle: String
+  products: ProductRelateToManyForUpdateInput
+}
+
+input ProductRelateToManyForUpdateInput {
+  disconnect: [ProductWhereUniqueInput!]
+  set: [ProductWhereUniqueInput!]
+  create: [ProductCreateInput!]
+  connect: [ProductWhereUniqueInput!]
+}
+
+input ProductCategoryUpdateArgs {
+  where: ProductCategoryWhereUniqueInput!
+  data: ProductCategoryUpdateInput!
+}
+
+input ProductCategoryCreateInput {
+  categoryTitle: String
+  products: ProductRelateToManyForCreateInput
+}
+
+input ProductRelateToManyForCreateInput {
+  create: [ProductCreateInput!]
+  connect: [ProductWhereUniqueInput!]
 }
 
 type Project {
@@ -632,6 +706,12 @@ type Mutation {
   updateProducts(data: [ProductUpdateArgs!]!): [Product]
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteProducts(where: [ProductWhereUniqueInput!]!): [Product]
+  createProductCategory(data: ProductCategoryCreateInput!): ProductCategory
+  createProductCategories(data: [ProductCategoryCreateInput!]!): [ProductCategory]
+  updateProductCategory(where: ProductCategoryWhereUniqueInput!, data: ProductCategoryUpdateInput!): ProductCategory
+  updateProductCategories(data: [ProductCategoryUpdateArgs!]!): [ProductCategory]
+  deleteProductCategory(where: ProductCategoryWhereUniqueInput!): ProductCategory
+  deleteProductCategories(where: [ProductCategoryWhereUniqueInput!]!): [ProductCategory]
   createProject(data: ProjectCreateInput!): Project
   createProjects(data: [ProjectCreateInput!]!): [Project]
   updateProject(where: ProjectWhereUniqueInput!, data: ProjectUpdateInput!): Project
@@ -687,6 +767,9 @@ type Query {
   products(where: ProductWhereInput! = {}, orderBy: [ProductOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProductWhereUniqueInput): [Product!]
   product(where: ProductWhereUniqueInput!): Product
   productsCount(where: ProductWhereInput! = {}): Int
+  productCategories(where: ProductCategoryWhereInput! = {}, orderBy: [ProductCategoryOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProductCategoryWhereUniqueInput): [ProductCategory!]
+  productCategory(where: ProductCategoryWhereUniqueInput!): ProductCategory
+  productCategoriesCount(where: ProductCategoryWhereInput! = {}): Int
   projects(where: ProjectWhereInput! = {}, orderBy: [ProjectOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProjectWhereUniqueInput): [Project!]
   project(where: ProjectWhereUniqueInput!): Project
   projectsCount(where: ProjectWhereInput! = {}): Int
