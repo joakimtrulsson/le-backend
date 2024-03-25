@@ -39,6 +39,10 @@ RECAPTCHA_SITE_SECRET=""
 
 ```
 
+## Google reCAPTCHA
+
+- Se README.md i le-frontend repo.
+
 ## STRIPE
 
 - Skapa ett konto på [Stripe](https://stripe.com/).
