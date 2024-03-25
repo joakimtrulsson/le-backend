@@ -1,5 +1,5 @@
 import { list } from '@keystone-6/core';
-import { text, integer, image, select } from '@keystone-6/core/fields';
+import { text, integer, image, select, relationship } from '@keystone-6/core/fields';
 import { allOperations } from '@keystone-6/core/access';
 import { isSignedIn, permissions, rules } from '../auth/access';
 import { type Lists } from '.keystone/types';
@@ -41,6 +41,16 @@ export const productSchema: Lists.Product = list({
     description: text({ label: 'Produktbeskrivning', validation: { isRequired: true } }),
 
     productImage: image({ label: 'Produktbild', storage: 's3_image' }),
+
+    productCategory: relationship({
+      ref: 'ProductCategory.products',
+      many: false,
+      ui: {
+        displayMode: 'select',
+        createView: { fieldMode: 'edit' },
+        itemView: { fieldMode: 'edit' },
+      },
+    }),
 
     price: integer({ label: 'Pris', validation: { isRequired: true } }),
 
